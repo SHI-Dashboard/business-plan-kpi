@@ -24,7 +24,7 @@ body{font-family:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystem
 .wrap{max-width:1240px;margin:0 auto;padding:0 24px}
 .tnum{font-variant-numeric:tabular-nums}
 
-header{background:linear-gradient(115deg,#161B29,#1E2740 55%,#241C4D);color:#fff;padding:24px 0 0;border-bottom:1px solid rgba(255,255,255,.08)}
+header{background:linear-gradient(115deg,#161B29,#1E2740 55%,#241C4D);color:#fff;padding:24px 0 0;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;z-index:50;box-shadow:0 6px 18px rgba(20,27,45,.14)}
 .hd{display:flex;flex-wrap:wrap;align-items:center;gap:13px 26px}
 .brand{display:flex;align-items:center;gap:12px}
 .mark{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--kp),#8A6BF2);display:grid;place-items:center;font-weight:800;font-size:15px;box-shadow:0 4px 14px rgba(94,53,237,.4)}
@@ -451,10 +451,11 @@ async function boot(){
   try{
     const r=await fetch('./data.json?t='+Date.now(),{cache:'no-store'});
     if(r.ok){ RAW=await r.json(); }
-  }catch(e){ /* offline / local file:// -> use embedded FALLBACK */ }
+  }catch(e){ /* offline / local file: use embedded FALLBACK */ }
   render();
 }
 boot();
 </script>
 </body>
 </html>
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx end-buffer -->

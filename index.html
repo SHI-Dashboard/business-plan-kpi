@@ -46,6 +46,9 @@ header{background:linear-gradient(115deg,#161B29,#1E2740 55%,#241C4D);color:#fff
 .tab.bp[aria-selected="true"]::after{background:var(--bp)} .tab.kp[aria-selected="true"]::after{background:var(--kp)} .tab.pd[aria-selected="true"]::after{background:#8A6BF2}
 .tab .dot{width:9px;height:9px;border-radius:3px}
 .tab.bp .dot{background:var(--bp)} .tab.kp .dot{background:var(--kp)} .tab.pd .dot{background:#8A6BF2}
+.langtog{display:flex;gap:2px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:2px;align-self:center}
+.langtog button{appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:11px;color:#AEB6CC;background:transparent;padding:5px 11px;border-radius:7px;letter-spacing:.02em;transition:background .15s,color .15s}
+.langtog button[aria-pressed="true"]{background:#fff;color:#161B29}
 
 .tabpane[hidden]{display:none}
 .tabpane.bp{--accent:var(--bp);--accent-lt:var(--bp-lt);--accent-soft:var(--bp-soft);--accent-deep:var(--bp-deep);--accent-lab:var(--bp-lab)}
@@ -166,20 +169,21 @@ footer b{color:var(--ink)}
   <div class="wrap">
     <div class="hd">
       <div class="brand"><div class="mark">SHI</div>
-        <div><h1>PT. SEO HEUNG INDORAYA</h1><div class="sub">경영관리 · 사업계획 / KPI 실적 모니터링</div></div>
+        <div><h1>PT. SEO HEUNG INDORAYA</h1><div class="sub" data-i18n="brand_sub">경영관리 · 사업계획 / KPI 실적 모니터링</div></div>
       </div>
-      <div class="title-block"><div class="k">Business Plan · KPI Monitor</div><h2>2026 실적 대시보드</h2></div>
+      <div class="title-block"><div class="k">Business Plan · KPI Monitor</div><h2 data-i18n="title">2026 실적 대시보드</h2></div>
+      <div class="langtog" id="langtog"><button type="button" data-lang="ko" aria-pressed="true">한국어</button><button type="button" data-lang="en" aria-pressed="false">English</button></div>
     </div>
     <div class="meta">
-      <span class="chip">기준월 <b>2026년 6월</b></span>
-      <span class="chip">단위 <b>USD</b></span>
-      <span class="chip">월별 계획 대비 실적 · 누계 달성</span>
+      <span class="chip" data-i18n-html="chip_asof">기준월 <b>2026년 6월</b></span>
+      <span class="chip" data-i18n-html="chip_unit">단위 <b>USD</b></span>
+      <span class="chip" data-i18n="chip_desc">월별 계획 대비 실적 · 누계 달성</span>
       <span class="chip" id="updated" style="background:rgba(94,53,237,.22);border-color:rgba(138,107,242,.4)"></span>
     </div>
     <div class="tabs" role="tablist">
-      <button class="tab bp" role="tab" aria-selected="true" data-tab="bp"><span class="dot"></span>사업계획 <span class="rng">26.01–26.12</span></button>
-      <button class="tab kp" role="tab" aria-selected="false" data-tab="kp"><span class="dot"></span>KPI <span class="rng">25.11–26.10</span></button>
-      <button class="tab pd" role="tab" aria-selected="false" data-tab="pd"><span class="dot"></span>보세물류센터 <span class="rng">PDPLB</span></button>
+      <button class="tab bp" role="tab" aria-selected="true" data-tab="bp"><span class="dot"></span><span data-i18n="tab_bp">사업계획</span> <span class="rng">26.01–26.12</span></button>
+      <button class="tab kp" role="tab" aria-selected="false" data-tab="kp"><span class="dot"></span><span data-i18n="tab_kp">KPI</span> <span class="rng">25.11–26.10</span></button>
+      <button class="tab pd" role="tab" aria-selected="false" data-tab="pd"><span class="dot"></span><span data-i18n="tab_pd">보세물류센터</span> <span class="rng">PDPLB</span></button>
     </div>
   </div>
 </header>
@@ -190,17 +194,17 @@ footer b{color:var(--ink)}
   <div class="tabpane pd" id="pane-pd" role="tabpanel" hidden>
     <section class="pdplb-sec">
       <div class="pdplb">
-        <div class="ph"><span class="bar3"></span><h3>보세물류센터 (PDPLB)</h3><span class="d">전체 누계 [25년 합계(12월) + 26.01–26.12] · 사업계획/KPI와 별도 관리</span></div>
+        <div class="ph"><span class="bar3"></span><h3 data-i18n="pd_title">보세물류센터 (PDPLB)</h3><span class="d" data-i18n="pd_d">전체 누계 [25년 합계(12월) + 26.01–26.12] · 사업계획/KPI와 별도 관리</span></div>
         <div class="pdgrid">
           <div>
-            <div class="pdchart-t">손익 흐름 <span style="color:#828BAD;font-weight:600;font-size:10px">· USD 누계</span></div>
+            <div class="pdchart-t" data-i18n-html="pd_flow_t">손익 흐름 <span style="color:#828BAD;font-weight:600;font-size:10px">· USD 누계</span></div>
             <div class="pdflow" id="pdFlow"></div>
             <div class="pdnote" id="pdNote"></div>
-            <div class="pdnote-edit"><div class="nlab"><span class="pin">📌</span> 특이사항 <span class="nsave" id="s_pdplb"></span></div>
-              <textarea class="nta" data-id="pdplb" placeholder="PDPLB 관련 특이사항·코멘트를 입력하세요 (예: 세관 인벤토리 이슈, 신규 보세 품목 등)"></textarea></div>
+            <div class="pdnote-edit"><div class="nlab"><span class="pin">📌</span> <span data-i18n="pd_notes">특이사항</span> <span class="nsave" id="s_pdplb"></span></div>
+              <textarea class="nta" data-id="pdplb" data-i18n-ph="pd_note_ph" placeholder="PDPLB 관련 특이사항·코멘트를 입력하세요 (예: 세관 인벤토리 이슈, 신규 보세 품목 등)"></textarea></div>
           </div>
           <div>
-            <div class="pdchart-t">월별 매출 · 영업이익 <span style="color:#828BAD;font-weight:600;font-size:10px">· USD K</span></div>
+            <div class="pdchart-t" data-i18n-html="pd_chart_t">월별 매출 · 영업이익 <span style="color:#828BAD;font-weight:600;font-size:10px">· USD K</span></div>
             <div id="pdChart"></div>
           </div>
         </div>
@@ -209,9 +213,9 @@ footer b{color:var(--ink)}
   </div>
 
   <footer>
-    <div><b>산출 기준</b> · 달성율 = 실적 ÷ 계획. 영업이익율은 실적−계획 %p 차이. 상태 : 달성 ≥100% · 근접 90–100% · 미달 &lt;90%. 막대 위 값 = 계획(연한색)·실적(진한색), 상단 % = 월별 달성율.</div>
-    <div><b>계획 출처</b> · 연간 계획 = 기초자료(2025·2026 P&L Business Plan). 사업계획=2026년 12개월, KPI=2025년 11·12월+2026년 1~10월. 실적 = 모니터링 파일(6월까지).</div>
-    <div><b>특이사항 메모</b> · 각 누계 보드에 입력한 내용은 사용 중인 브라우저·기기에 저장됩니다(다른 기기와는 공유되지 않음). <b>기계장비</b>는 6월 대형 계획 집중으로 누계 달성율이 낮게 표시(시점 편차).</div>
+    <div data-i18n-html="foot1"><b>산출 기준</b> · 달성율 = 실적 ÷ 계획. 영업이익율은 실적−계획 %p 차이. 상태 : 달성 ≥100% · 근접 90–100% · 미달 &lt;90%. 막대 위 값 = 계획(연한색)·실적(진한색), 상단 % = 월별 달성율.</div>
+    <div data-i18n-html="foot2"><b>계획 출처</b> · 연간 계획 = 기초자료(2025·2026 P&L Business Plan). 사업계획=2026년 12개월, KPI=2025년 11·12월+2026년 1~10월. 실적 = 모니터링 파일(6월까지).</div>
+    <div data-i18n-html="foot3"><b>특이사항 메모</b> · 각 누계 보드에 입력한 내용은 사용 중인 브라우저·기기에 저장됩니다(다른 기기와는 공유되지 않음). <b>기계장비</b>는 6월 대형 계획 집중으로 누계 달성율이 낮게 표시(시점 편차).</div>
   </footer>
 </div>
 <div id="tip"></div>
@@ -221,12 +225,22 @@ const FALLBACK = {"months": {"bp": ["26.01", "26.02", "26.03", "26.04", "26.05",
 let RAW = FALLBACK;
 let BP_M=['26.01','26.02','26.03','26.04','26.05','26.06','26.07','26.08','26.09','26.10','26.11','26.12'];
 let KP_M=['25.11','25.12','26.01','26.02','26.03','26.04','26.05','26.06','26.07','26.08','26.09','26.10'];
+let LANG=(()=>{try{return localStorage.getItem('shi_lang')||'ko'}catch(e){return 'ko'}})();
+const T={"ko":{"brand_sub": "경영관리 · 사업계획 / KPI 실적 모니터링", "title": "2026 실적 대시보드", "chip_asof": "기준월 <b>2026년 6월</b>", "chip_unit": "단위 <b>USD</b>", "chip_desc": "월별 계획 대비 실적 · 누계 달성", "data_asof": "데이터 기준 ·", "tab_bp": "사업계획", "tab_kp": "KPI", "tab_pd": "보세물류센터", "sc_title": "종합 스코어카드 · 연간 계획 대비 실적", "sc_cap_bp": "사업계획 회계연도 26.01–26.12", "sc_cap_kp": "KPI 회계연도 25.11–26.10", "sc_cap_asof": "· 실적 기준월 2026.06", "th_metric": "지표", "th_plan": "연간 계획", "th_act": "누계 실적", "th_diff": "차이", "th_ach": "달성율", "grp_total": "전사 종합", "grp_total_d": "회사 전체 · 총매출 / 영업이익 / 영업이익율", "grp_seg": "부문별 매출", "grp_seg_d": "MRO · 기계장비 · 구매표준화 부문별 실적", "m_tot": "총매출", "m_op": "영업이익", "m_opm": "영업이익율", "m_rel": "관계사 MRO", "m_nonrel": "비관계사 MRO", "m_mach": "기계장비 (비관계사)", "m_std": "구매표준화", "improved": "개선", "declined": "악화", "sc_note": "※ 상단 스코어카드 = <b>회계연도 총 계획 대비 현재 누계실적</b>(연간 진행률). 아래 지표별 대시보드 = <b>해당월(6월)까지 누계 계획 대비 실적</b>. 달성율 = 누계실적 ÷ 연간계획.", "cum_prefix": "누계", "monthly_pa": "월별 계획 대비 실적", "bar_pct": "막대 위 % = 달성율", "plan": "계획", "actual": "실적", "st_met": "달성", "st_near": "근접", "st_below": "미달", "cum_plan": "누계 계획", "cum_actual": "누계 실적", "vs_plan": "계획 대비", "assessment": "평가", "above_plan": "계획 상회", "below_plan": "계획 미달", "cum_ach": "누계 달성율", "difference": "차이", "cumhead": "누계 · 해당월(6월)까지 계획 대비 실적", "notes": "특이사항 · 코멘트", "note_ph": "이 지표의 특이사항·코멘트를 입력하세요 (자동 저장)", "saved": "✓ 저장됨", "pd_title": "보세물류센터 (PDPLB)", "pd_d": "전체 누계 [25년 합계(12월) + 26.01–26.12] · 사업계획/KPI와 별도 관리", "pd_flow_t": "손익 흐름 <span style=\"color:#828BAD;font-weight:600;font-size:10px\">· USD 누계</span>", "pd_chart_t": "월별 매출 · 영업이익 <span style=\"color:#828BAD;font-weight:600;font-size:10px\">· USD K</span>", "pd_notes": "특이사항", "pd_note_ph": "PDPLB 관련 특이사항·코멘트를 입력하세요 (예: 세관 인벤토리 이슈, 신규 보세 품목 등)", "pd_sales": "매출", "pd_cogs": "원가", "pd_sga": "판관비", "pd_op": "영업이익", "pd_opm": "영업이익율", "pd_loss": "손실 구간", "pd_note_a": "매출 ", "pd_note_b": " 대비 원가·판관비 합계 ", "pd_note_c": " 영업손실", "pd_note_d": " · 운영 초기 판관비 선투입 영향", "foot1": "<b>산출 기준</b> · 달성율 = 실적 ÷ 계획. 영업이익율은 실적−계획 %p 차이. 상태 : 달성 ≥100% · 근접 90–100% · 미달 &lt;90%. 막대 위 값 = 계획(연한색)·실적(진한색), 상단 % = 월별 달성율.", "foot2": "<b>계획 출처</b> · 연간 계획 = 기초자료(2025·2026 P&L Business Plan). 사업계획=2026년 12개월, KPI=2025년 11·12월+2026년 1~10월. 실적 = 모니터링 파일(6월까지).", "foot3": "<b>특이사항 메모</b> · 각 누계 보드에 입력한 내용은 사용 중인 브라우저·기기에 저장됩니다(다른 기기와는 공유되지 않음). <b>기계장비</b>는 6월 대형 계획 집중으로 누계 달성율이 낮게 표시(시점 편차)."},"en":{"brand_sub": "Management · Business Plan / KPI Monitoring", "title": "2026 Performance Dashboard", "chip_asof": "As of <b>Jun 2026</b>", "chip_unit": "Unit <b>USD</b>", "chip_desc": "Monthly plan vs actual · Cumulative", "data_asof": "Data as of ·", "tab_bp": "Business Plan", "tab_kp": "KPI", "tab_pd": "Bonded Warehouse", "sc_title": "Overall Scorecard · Annual Plan vs Actual", "sc_cap_bp": "Business Plan FY 26.01–26.12", "sc_cap_kp": "KPI FY 25.11–26.10", "sc_cap_asof": "· As of 2026.06", "th_metric": "Metric", "th_plan": "Annual Plan", "th_act": "Cumulative Actual", "th_diff": "Difference", "th_ach": "Achievement", "grp_total": "Company Total", "grp_total_d": "Company-wide · Total Sales / Operating Profit / Operating Margin", "grp_seg": "Sales by Segment", "grp_seg_d": "MRO · Machinery · Purchasing Standardization by segment", "m_tot": "Total Sales", "m_op": "Operating Profit", "m_opm": "Operating Margin", "m_rel": "Affiliate MRO", "m_nonrel": "Non-Affiliate MRO", "m_mach": "Machinery (Non-Affiliate)", "m_std": "Purchasing Standardization", "improved": "Improved", "declined": "Declined", "sc_note": "※ Top scorecard = <b>cumulative actual vs total annual plan</b> (annual progress). Metric dashboards below = <b>cumulative plan vs actual through Jun</b>. Achievement = cumulative actual ÷ annual plan.", "cum_prefix": "Cum.", "monthly_pa": "Monthly plan vs actual", "bar_pct": "% above bar = achievement", "plan": "Plan", "actual": "Actual", "st_met": "Met", "st_near": "Near", "st_below": "Below", "cum_plan": "Cumulative Plan", "cum_actual": "Cumulative Actual", "vs_plan": "vs Plan", "assessment": "Assessment", "above_plan": "Above Plan", "below_plan": "Below Plan", "cum_ach": "Cum. Achievement", "difference": "Difference", "cumhead": "Cumulative · Plan vs Actual (through Jun)", "notes": "Notes · Comments", "note_ph": "Enter notes for this metric (auto-saved)", "saved": "✓ Saved", "pd_title": "Bonded Warehouse (PDPLB)", "pd_d": "Total cumulative [FY25 total (Dec) + 26.01–26.12] · Managed separately from Business Plan/KPI", "pd_flow_t": "P&L Flow <span style=\"color:#828BAD;font-weight:600;font-size:10px\">· USD cumulative</span>", "pd_chart_t": "Monthly Sales · Operating Profit <span style=\"color:#828BAD;font-weight:600;font-size:10px\">· USD K</span>", "pd_notes": "Notes", "pd_note_ph": "Enter PDPLB notes (e.g., customs inventory issues, new bonded items)", "pd_sales": "Sales", "pd_cogs": "COGS", "pd_sga": "SG&A", "pd_op": "Operating Profit", "pd_opm": "Operating Margin", "pd_loss": "Loss", "pd_note_a": "Sales ", "pd_note_b": " vs COGS+SG&A ", "pd_note_c": " operating loss", "pd_note_d": " · early-stage SG&A front-loading", "foot1": "<b>Basis</b> · Achievement = actual ÷ plan. Operating margin shows actual−plan %p gap. Status: Met ≥100% · Near 90–100% · Below &lt;90%. Bar values = plan (light) · actual (dark), top % = monthly achievement.", "foot2": "<b>Plan source</b> · Annual plan = base data (2025·2026 P&L Business Plan). Business Plan = 12 months of 2026, KPI = Nov·Dec 2025 + Jan–Oct 2026. Actual = monitoring file (through June).", "foot3": "<b>Notes</b> · Text entered on each cumulative board is stored on the current browser/device (not shared across devices). <b>Machinery</b> shows a low cumulative achievement due to a large plan concentrated in June (timing variance)."}};
+const t=k=>{const o=T[LANG]||T.ko;return (o&&o[k]!=null)?o[k]:(T.ko[k]!=null?T.ko[k]:k)};
+function applyStaticI18n(){
+  document.documentElement.lang=LANG;
+  document.querySelectorAll('[data-i18n]').forEach(e=>{e.textContent=t(e.dataset.i18n)});
+  document.querySelectorAll('[data-i18n-html]').forEach(e=>{e.innerHTML=t(e.dataset.i18nHtml)});
+  document.querySelectorAll('[data-i18n-ph]').forEach(e=>{e.setAttribute('placeholder',t(e.dataset.i18nPh))});
+  document.querySelectorAll('#langtog button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lang===LANG?'true':'false'));
+}
 const METRICS=[
- {group:'전사 종합', d:'회사 전체 · 총매출 / 영업이익 / 영업이익율', items:[
-   {key:'tot',name:'총매출',mode:'usd'},{key:'op',name:'영업이익',mode:'usd'},{key:'opm',name:'영업이익율',mode:'pct'} ]},
- {group:'부문별 매출', d:'MRO · 기계장비 · 구매표준화 부문별 실적', items:[
-   {key:'rel',name:'관계사 MRO',mode:'usd'},{key:'nonrel',name:'비관계사 MRO',mode:'usd'},
-   {key:'mach',name:'기계장비 (비관계사)',mode:'usd'},{key:'std',name:'구매표준화',mode:'usd'} ]},
+ {group:'grp_total', d:'grp_total_d', items:[
+   {key:'tot',name:'m_tot',mode:'usd'},{key:'op',name:'m_op',mode:'usd'},{key:'opm',name:'m_opm',mode:'pct'} ]},
+ {group:'grp_seg', d:'grp_seg_d', items:[
+   {key:'rel',name:'m_rel',mode:'usd'},{key:'nonrel',name:'m_nonrel',mode:'usd'},
+   {key:'mach',name:'m_mach',mode:'usd'},{key:'std',name:'m_std',mode:'usd'} ]},
 ];
 const $=(s,c=document)=>c.querySelector(s);
 const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
@@ -236,7 +250,7 @@ const fUSD=n=>Math.round(n).toLocaleString('en-US');
 const fK=n=>{const a=Math.abs(n);let s=n<0?'−':'';if(a>=1e6)return s+(a/1e6).toFixed(2)+'M';if(a>=1e3)return s+Math.round(a/1e3)+'K';return s+Math.round(a)};
 const fPct=x=>(x*100).toFixed(1)+'%';
 const trim=(a,b)=>{let last=-1;for(let i=0;i<Math.max(a.length,b.length);i++){if(a[i]!=null||b[i]!=null)last=i}return last};
-function stat(a){if(a>=1)return{c:'var(--pos)',bg:'var(--pos-soft)',t:'달성'};if(a>=.9)return{c:'var(--warn)',bg:'var(--warn-soft)',t:'근접'};return{c:'var(--neg)',bg:'var(--neg-soft)',t:'미달'}}
+function stat(a){if(a>=1)return{c:'var(--pos)',bg:'var(--pos-soft)',t:'st_met'};if(a>=.9)return{c:'var(--warn)',bg:'var(--warn-soft)',t:'st_near'};return{c:'var(--neg)',bg:'var(--neg-soft)',t:'st_below'}}
 function statC(a){return a>=1?'#178055':a>=.9?'#B77812':'#C63A2C'}
 function statHex(a){return a>=1?{c:'#178055',bg:'#E3F3EC',t:'달성'}:a>=.9?{c:'#B77812',bg:'#FAEFD7',t:'근접'}:{c:'#C63A2C',bg:'#FAE6E3',t:'미달'}}
 const tip=$('#tip');
@@ -268,8 +282,8 @@ function monthChart(months,plan,act,mode,basis){
     function bar(v,x,fill,lb){const yy=y(v),h=Math.abs(yy-y0);
       const r=sv('rect',{x,y:Math.min(yy,y0),width:bw,height:0,rx:2.5,fill,class:'bar','data-h':h,'data-y':Math.min(yy,y0)});
       r.style.cursor='pointer';r.addEventListener('mousemove',e=>showTip(e,`<div class="tt">${mL[i]} · ${lb}</div>${isPct?fPct(v):fUSD(v)+' USD'}`));r.addEventListener('mouseleave',hideTip);svg.appendChild(r)}
-    if(P!=null)bar(P,px,col.lt,'계획');
-    if(A!=null)bar(A,ax,col.act,'실적');
+    if(P!=null)bar(P,px,col.lt,t('plan'));
+    if(A!=null)bar(A,ax,col.act,t('actual'));
     // value labels (both), with vertical stagger on collision
     const lab=(x,v,yy,fill)=>{const t=sv('text',{x,y:yy,class:'vlab','text-anchor':'middle',fill});t.textContent=isPct?(v*100).toFixed(1)+'%':fK(v);svg.appendChild(t)};
     if(P!=null&&A!=null){
@@ -299,26 +313,26 @@ function cumStrip(c,mode,basis){
   let cells,meter='';
   if(isPct){
     const up=diff>=0,col=up?'#178055':'#C63A2C';
-    cells=`<div class="cs-cell"><div class="cs-l">누계 계획</div><div class="cs-v">${fPct(c.plan)}</div></div>
-      <div class="cs-cell"><div class="cs-l">누계 실적</div><div class="cs-v act">${fPct(c.act)}</div></div>
-      <div class="cs-cell"><div class="cs-l">계획 대비</div><div class="cs-v" style="color:${col}">${(up?'+':'')+(diff*100).toFixed(1)}%p</div></div>
-      <div class="cs-cell"><div class="cs-l">평가</div><div class="cs-v" style="font-size:13.5px;color:${col}">${up?'계획 상회':'계획 미달'}</div></div>`;
+    cells=`<div class="cs-cell"><div class="cs-l">${t('cum_plan')}</div><div class="cs-v">${fPct(c.plan)}</div></div>
+      <div class="cs-cell"><div class="cs-l">${t('cum_actual')}</div><div class="cs-v act">${fPct(c.act)}</div></div>
+      <div class="cs-cell"><div class="cs-l">${t('vs_plan')}</div><div class="cs-v" style="color:${col}">${(up?'+':'')+(diff*100).toFixed(1)}%p</div></div>
+      <div class="cs-cell"><div class="cs-l">${t('assessment')}</div><div class="cs-v" style="font-size:13.5px;color:${col}">${up?t('above_plan'):t('below_plan')}</div></div>`;
   } else {
     const ach=c.plan!==0?c.act/c.plan:0,s=stat(ach),sM=Math.max(130,Math.ceil(ach*100/10)*10+10);
-    cells=`<div class="cs-cell"><div class="cs-l">누계 계획</div><div class="cs-v">${fUSD(c.plan)}</div></div>
-      <div class="cs-cell"><div class="cs-l">누계 실적</div><div class="cs-v act">${fUSD(c.act)}</div></div>
-      <div class="cs-cell"><div class="cs-l">누계 달성율</div><div class="cs-v" style="color:${s.c}">${fPct(ach)}<span class="b" style="background:${s.bg};color:${s.c}">${s.t}</span></div></div>
-      <div class="cs-cell"><div class="cs-l">차이</div><div class="cs-v" style="color:${diff>=0?'#178055':'#C63A2C'}">${diff>=0?'+':'−'}${fUSD(Math.abs(diff))}</div></div>`;
+    cells=`<div class="cs-cell"><div class="cs-l">${t('cum_plan')}</div><div class="cs-v">${fUSD(c.plan)}</div></div>
+      <div class="cs-cell"><div class="cs-l">${t('cum_actual')}</div><div class="cs-v act">${fUSD(c.act)}</div></div>
+      <div class="cs-cell"><div class="cs-l">${t('cum_ach')}</div><div class="cs-v" style="color:${s.c}">${fPct(ach)}<span class="b" style="background:${s.bg};color:${s.c}">${s.t}</span></div></div>
+      <div class="cs-cell"><div class="cs-l">${t('difference')}</div><div class="cs-v" style="color:${diff>=0?'#178055':'#C63A2C'}">${diff>=0?'+':'−'}${fUSD(Math.abs(diff))}</div></div>`;
     meter=`<div class="cmeter"><div class="nc" style="left:${100/sM*100}%"></div><div class="f" data-w="${Math.max(0,Math.min(ach*100,sM))/sM*100}" style="background:${s.c}"></div></div>`;
   }
-  box.innerHTML=`<div class="cumhead">누계 · 해당월(6월)까지 계획 대비 실적 <span class="u">${isPct?'%':'USD'}</span></div>
+  box.innerHTML=`<div class="cumhead">${t('cumhead')} <span class="u">${isPct?'%':'USD'}</span></div>
     <div class="cumstrip">${cells}</div>${meter}`;
   return box;
 }
 function noteBlock(noteId){
   const d=el('div','note');
-  d.innerHTML=`<div class="nlab"><span class="pin">📌</span> 특이사항 · 코멘트 <span class="nsave" id="s_${noteId}"></span></div>
-    <textarea class="nta" data-id="${noteId}" placeholder="이 지표의 특이사항·코멘트를 입력하세요 (자동 저장)"></textarea>`;
+  d.innerHTML=`<div class="nlab"><span class="pin">📌</span> ${t('notes')} <span class="nsave" id="s_${noteId}"></span></div>
+    <textarea class="nta" data-id="${noteId}" placeholder="${t('note_ph')}"></textarea>`;
   return d;
 }
 
@@ -326,29 +340,29 @@ function noteBlock(noteId){
 function buildScorecard(basis){
   const rows=[];
   METRICS.forEach(g=>{
-    rows.push(`<tr class="grp"><td colspan="6">${g.group}</td></tr>`);
+    rows.push(`<tr class="grp"><td colspan="6">${t(g.group)}</td></tr>`);
     g.items.forEach(it=>{
       const c=RAW.cum[it.key],plan=c[basis+'_plan_year'],act=c[basis+'_act'],diff=act-plan,isPct=it.mode==='pct';
       let diffCell,achCell;
       if(isPct){
         diffCell=`<td class="diff ${diff>=0?'pos':'neg'}">${(diff>=0?'+':'')+(diff*100).toFixed(1)}%p</td>`;
-        achCell=`<td><span class="stbadge" style="background:${diff>=0?'#E3F3EC':'#FAE6E3'};color:${diff>=0?'#178055':'#C63A2C'}">${diff>=0?'개선':'악화'}</span></td>`;
+        achCell=`<td><span class="stbadge" style="background:${diff>=0?'#E3F3EC':'#FAE6E3'};color:${diff>=0?'#178055':'#C63A2C'}">${diff>=0?t('improved'):t('declined')}</span></td>`;
       }else{
         const ach=plan!==0?act/plan:0,s=statHex(ach);
         diffCell=`<td class="diff neg">${act-plan>=0?'+':'−'}${fUSD(Math.abs(act-plan))}</td>`;
         achCell=`<td><span class="stbadge" style="background:${s.bg};color:${s.c}">${(ach*100).toFixed(1)}%</span></td>`;
       }
       const fmt=v=>isPct?fPct(v):fUSD(v);
-      rows.push(`<tr><td class="nm">${it.name}</td><td><span class="v">${fmt(plan)}</span></td>
+      rows.push(`<tr><td class="nm">${t(it.name)}</td><td><span class="v">${fmt(plan)}</span></td>
         <td class="act"><span class="v">${fmt(act)}</span></td>${diffCell}${achCell}</tr>`);
     });
   });
   return `<div class="score">
-    <div class="score-h"><span class="t"><span class="bar3"></span>종합 스코어카드 · 연간 계획 대비 실적</span>
-      <span class="cap">${basis==='bp'?'사업계획 회계연도 26.01–26.12':'KPI 회계연도 25.11–26.10'} · 실적 기준월 2026.06</span></div>
-    <table class="sc"><thead><tr><th>지표</th><th>연간 계획</th><th>누계 실적</th><th>차이</th><th>달성율</th></tr></thead>
+    <div class="score-h"><span class="t"><span class="bar3"></span>${t('sc_title')}</span>
+      <span class="cap">${basis==='bp'?t('sc_cap_bp'):t('sc_cap_kp')} ${t('sc_cap_asof')}</span></div>
+    <table class="sc"><thead><tr><th>${t('th_metric')}</th><th>${t('th_plan')}</th><th>${t('th_act')}</th><th>${t('th_diff')}</th><th>${t('th_ach')}</th></tr></thead>
       <tbody>${rows.join('')}</tbody></table>
-    <div class="sc-note" style="color:var(--accent-deep);background:var(--accent-soft)">※ 상단 스코어카드 = <b>회계연도 총 계획 대비 현재 누계실적</b>(연간 진행률). 아래 지표별 대시보드 = <b>해당월(6월)까지 누계 계획 대비 실적</b>. 달성율 = 누계실적 ÷ 연간계획.</div>
+    <div class="sc-note" style="color:var(--accent-deep);background:var(--accent-soft)">${t('sc_note')}</div>
   </div>`;
 }
 
@@ -358,21 +372,21 @@ function buildPane(basis){
   pane.insertAdjacentHTML('beforeend',buildScorecard(basis));
   METRICS.forEach(g=>{
     const grp=el('div','grp');
-    grp.appendChild(el('div','grp-h',`<span class="bar3"></span><h3>${g.group}</h3><span class="d">${g.d}</span>`));
+    grp.appendChild(el('div','grp-h',`<span class="bar3"></span><h3>${t(g.group)}</h3><span class="d">${t(g.d)}</span>`));
     g.items.forEach(it=>{
       const md=RAW.monthly[it.key],cd=RAW.cum[it.key];
       const plan=md[basis+'_plan'],act=md[basis+'_act'],cum={plan:cd[basis+'_plan_ytd'],act:cd[basis+'_act']};
       const isPct=it.mode==='pct',ach=cum.plan!==0?cum.act/cum.plan:0;
       let badge;
       if(isPct){const d=cum.act-cum.plan;badge=`<span class="st" style="background:${d>=0?'var(--pos-soft)':'var(--neg-soft)'};color:${d>=0?'var(--pos)':'var(--neg)'}">${(d>=0?'+':'')+(d*100).toFixed(1)}%p</span>`}
-      else{const s=stat(ach);badge=`<span class="st" style="background:${s.bg};color:${s.c}">${s.t} ${fPct(ach)}</span>`}
+      else{const s=stat(ach);badge=`<span class="st" style="background:${s.bg};color:${s.c}">${t(s.t)} ${fPct(ach)}</span>`}
       const card=el('div','mcard');
-      card.innerHTML=`<div class="mtop"><span class="nm"><span class="tagm">${basis.toUpperCase()}</span>${it.name}</span>
-        <span class="cum-badge">누계 ${isPct?fPct(cum.act):fUSD(cum.act)} ${badge}</span></div>
-        <div class="mbody"><div class="panel-t">월별 계획 대비 실적 <span class="u">막대 위 % = 달성율</span></div><div class="chartwrap"></div></div>`;
+      card.innerHTML=`<div class="mtop"><span class="nm"><span class="tagm">${basis.toUpperCase()}</span>${t(it.name)}</span>
+        <span class="cum-badge">${t('cum_prefix')} ${isPct?fPct(cum.act):fUSD(cum.act)} ${badge}</span></div>
+        <div class="mbody"><div class="panel-t">${t('monthly_pa')} <span class="u">${t('bar_pct')}</span></div><div class="chartwrap"></div></div>`;
       const CW=card.querySelector('.chartwrap');
       CW.appendChild(monthChart(months,plan,act,it.mode,basis));
-      CW.appendChild(el('div','leg',`<span><i style="background:${COL[basis].lt}"></i>계획</span><span><i style="background:${COL[basis].act}"></i>실적</span>`));
+      CW.appendChild(el('div','leg',`<span><i style="background:${COL[basis].lt}"></i>${t('plan')}</span><span><i style="background:${COL[basis].act}"></i>${t('actual')}</span>`));
       card.appendChild(cumStrip(cum,it.mode,basis));
       card.appendChild(noteBlock(basis+'_'+it.key));
       grp.appendChild(card);
@@ -383,15 +397,15 @@ function buildPane(basis){
 
 /* ---------- PDPLB ---------- */
 function initPDPLB(){
-  const p=RAW.pdplb,flow=$('#pdFlow');
-  [['매출',p.sales],['원가',-p.cogs],['판관비',-p.sga],['영업이익',p.op]].forEach((s,i,arr)=>{
-    const neg=s[1]<0&&s[0]==='영업이익';
+  const p=RAW.pdplb,flow=$('#pdFlow');flow.innerHTML='';$('#pdChart').innerHTML='';
+  [[t('pd_sales'),p.sales],[t('pd_cogs'),-p.cogs],[t('pd_sga'),-p.sga],[t('pd_op'),p.op]].forEach((s,i,arr)=>{
+    const neg=s[1]<0&&i===arr.length-1;
     flow.appendChild(el('div','pdstep'+(neg?' neg':''),`<div class="l">${s[0]}</div><div class="v">${s[1]<0?'−':''}${fUSD(Math.abs(s[1]))}</div>`));
     if(i<arr.length-1)flow.appendChild(el('div','arrow','→'));
   });
   flow.appendChild(el('div','arrow','→'));
-  flow.appendChild(el('div','pdstep neg',`<div class="l">영업이익율</div><div class="v">${(p.opm*100).toFixed(1)}%</div><div class="s bad">손실 구간</div>`));
-  $('#pdNote').innerHTML=`매출 <b>${fUSD(p.sales)}</b> 대비 원가·판관비 합계 <b>${fUSD(p.cogs+p.sga)}</b> → <b style="color:#FF8D7E">${fUSD(Math.abs(p.op))} 영업손실</b> · 운영 초기 판관비 선투입 영향`;
+  flow.appendChild(el('div','pdstep neg',`<div class="l">${t('pd_opm')}</div><div class="v">${(p.opm*100).toFixed(1)}%</div><div class="s bad">${t('pd_loss')}</div>`));
+  $('#pdNote').innerHTML=`${t('pd_note_a')}<b>${fUSD(p.sales)}</b>${t('pd_note_b')}<b>${fUSD(p.cogs+p.sga)}</b> → <b style="color:#FF8D7E">${fUSD(Math.abs(p.op))}${t('pd_note_c')}</b>${t('pd_note_d')}`;
   const ms=p.m_sales,mo=p.m_op,last=trim(ms,mo),n=last+1;
   const mL=RAW.months.bp.slice(0,n),sA=ms.slice(0,n),oA=mo.slice(0,n);
   const W=Math.max(300,n*70),H=210,pad={l:40,r:10,t:16,b:26},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b,gw=iw/n;
@@ -403,22 +417,22 @@ function initPDPLB(){
     const t=sv('text',{x:pad.l-6,y:yy+3,class:'axl','text-anchor':'end'});t.textContent=fK(val);svg.appendChild(t)}
   const bw=Math.min(18,gw*0.3),gap=4,y0=y(0);
   for(let i=0;i<n;i++){const cx=pad.l+gw*i+gw/2,px=cx-bw-gap/2,ax=cx+gap/2;
-    [['매출',sA[i],px,'#5FA8E8'],['영업이익',oA[i],ax,(oA[i]<0?'#FF8D7E':'#8A6BF2')]].forEach(([lb,v,x,c])=>{
+    [[t('pd_sales'),sA[i],px,'#5FA8E8'],[t('pd_op'),oA[i],ax,(oA[i]<0?'#FF8D7E':'#8A6BF2')]].forEach(([lb,v,x,c])=>{
       if(v==null)return;const yy=y(v),h=Math.abs(yy-y0);
       const r=sv('rect',{x,y:Math.min(yy,y0),width:bw,height:0,rx:2.5,fill:c,class:'bar','data-h':h,'data-y':Math.min(yy,y0)});
       r.style.cursor='pointer';r.addEventListener('mousemove',e=>showTip(e,`<div class="tt">${mL[i]} · ${lb}</div>${fUSD(v)} USD`));r.addEventListener('mouseleave',hideTip);svg.appendChild(r);
       const tl=sv('text',{x:x+bw/2,y:v>=0?yy-4:yy+11,class:'vlab','text-anchor':'middle',fill:c});tl.textContent=fK(v);svg.appendChild(tl)});
     const mt=sv('text',{x:cx,y:H-8,class:'mth','text-anchor':'middle'});mt.textContent=mL[i];svg.appendChild(mt)}
   $('#pdChart').appendChild(svg);
-  $('#pdChart').appendChild(el('div','leg',`<span style="color:#9AA2C2"><i style="background:#5FA8E8"></i>매출</span><span style="color:#9AA2C2"><i style="background:#8A6BF2"></i>영업이익</span>`));
+  $('#pdChart').appendChild(el('div','leg',`<span style="color:#9AA2C2"><i style="background:#5FA8E8"></i>${t('pd_sales')}</span><span style="color:#9AA2C2"><i style="background:#8A6BF2"></i>${t('pd_op')}</span>`));
 }
 
 /* ---------- editable notes persistence ---------- */
 function initNotes(){
-document.querySelectorAll('.nta').forEach(t=>{
-  const k='shi_dash_note::'+t.dataset.id;
-  try{const v=localStorage.getItem(k);if(v)t.value=v;}catch(e){}
-  t.addEventListener('input',()=>{try{localStorage.setItem(k,t.value);const s=document.getElementById('s_'+t.dataset.id);if(s){s.textContent='✓ 저장됨';clearTimeout(s._t);s._t=setTimeout(()=>s.textContent='',1400);}}catch(e){}});
+document.querySelectorAll('.nta').forEach(ta=>{
+  const k='shi_dash_note::'+ta.dataset.id;
+  try{const v=localStorage.getItem(k);if(v)ta.value=v;}catch(e){}
+  ta.addEventListener('input',()=>{try{localStorage.setItem(k,ta.value);const s=document.getElementById('s_'+ta.dataset.id);if(s){s.textContent=t('saved');clearTimeout(s._t);s._t=setTimeout(()=>s.textContent='',1400);}}catch(e){}});
 });
 }
 
@@ -433,6 +447,10 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
   panes.bp.hidden=(k!=='bp');panes.kp.hidden=(k!=='kp');panes.pd.hidden=(k!=='pd');animate();
 }));
+document.querySelectorAll('#langtog button').forEach(b=>b.addEventListener('click',()=>{
+  LANG=b.dataset.lang; try{localStorage.setItem('shi_lang',LANG)}catch(e){}
+  render();
+}));
 window.addEventListener('scroll',hideTip,{passive:true});
 
 /* ---------- render + live data loader ---------- */
@@ -442,10 +460,11 @@ function render(){
   buildPane('bp'); buildPane('kp');
   initPDPLB();
   initNotes();
+  applyStaticI18n();
   animate();
   // stamp last-updated if provided in data
   const st=document.getElementById('updated');
-  if(st) st.textContent = RAW.updated ? ('데이터 기준 · '+RAW.updated) : '';
+  if(st){ const u=RAW.updated||''; const uu=(LANG==='en')?u.replace('누계 · 연간계획 반영','cumulative · annual plan'):u; st.textContent = u ? (t('data_asof')+' '+uu) : ''; }
 }
 async function boot(){
   try{

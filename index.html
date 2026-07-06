@@ -163,6 +163,65 @@ footer b{color:var(--ink)}
 }
 @media (prefers-reduced-motion:reduce){.bar,.f,.hf{transition:none!important}}
 </style>
+<style id="dash-bigfont">
+/* ===== 글자 +3.5px 확대 (전 탭 공통). 보세물류센터 탭 '숫자'(플로우 값·차트 라벨)는 원본 크기 유지 ===== */
+/* 공용 헤더/푸터/툴팁 */
+header .brand h1{font-size:17.5px!important}
+header .brand .sub{font-size:14.5px!important}
+header .mark{font-size:18.5px!important}
+header .title-block .k{font-size:14px!important}
+header .title-block h2{font-size:24.5px!important}
+header .chip{font-size:14.5px!important}
+header .tab{font-size:17px!important}
+header .tab .rng{font-size:14px!important}
+header .langtog button{font-size:14.5px!important}
+#tip{font-size:14.5px!important}
+#tip .tt{font-size:13px!important}
+footer{font-size:14px!important}
+/* 사업계획 + KPI 지표 대시보드 */
+#pane-bp .score-h .t,#pane-kp .score-h .t{font-size:17.5px!important}
+#pane-bp .score-h .cap,#pane-kp .score-h .cap{font-size:14px!important}
+#pane-bp table.sc,#pane-kp table.sc{font-size:16px!important}
+#pane-bp table.sc th,#pane-kp table.sc th{font-size:14px!important}
+#pane-bp table.sc tr.grp td,#pane-kp table.sc tr.grp td{font-size:14.5px!important}
+#pane-bp .stbadge,#pane-kp .stbadge{font-size:14px!important}
+#pane-bp .sc-note,#pane-kp .sc-note{font-size:14px!important}
+#pane-bp .grp-h h3,#pane-kp .grp-h h3{font-size:18.5px!important}
+#pane-bp .grp-h .d,#pane-kp .grp-h .d{font-size:15px!important}
+#pane-bp .mtop .nm,#pane-kp .mtop .nm{font-size:18px!important}
+#pane-bp .mtop .nm .tagm,#pane-kp .mtop .nm .tagm{font-size:13.5px!important}
+#pane-bp .mtop .cum-badge,#pane-kp .mtop .cum-badge{font-size:15px!important}
+#pane-bp .mtop .cum-badge .st,#pane-kp .mtop .cum-badge .st{font-size:15.5px!important}
+#pane-bp .panel-t,#pane-kp .panel-t{font-size:14.5px!important}
+#pane-bp .panel-t .u,#pane-kp .panel-t .u{font-size:13px!important}
+#pane-bp .cumhead,#pane-kp .cumhead{font-size:14.5px!important}
+#pane-bp .cumhead .u,#pane-kp .cumhead .u{font-size:12.5px!important}
+#pane-bp .cs-l,#pane-kp .cs-l{font-size:14px!important}
+#pane-bp .cs-v,#pane-kp .cs-v{font-size:19.5px!important}
+#pane-bp .cs-v .b,#pane-kp .cs-v .b{font-size:13.5px!important}
+/* 메모/범례 (전 탭 공통, 텍스트) */
+#pane-bp .nlab,#pane-kp .nlab,#pane-pd .nlab{font-size:14px!important}
+#pane-bp .nlab .pin,#pane-kp .nlab .pin,#pane-pd .nlab .pin{font-size:14.5px!important}
+#pane-bp .nsave,#pane-kp .nsave,#pane-pd .nsave{font-size:12.5px!important}
+#pane-bp .nta,#pane-kp .nta,#pane-pd .nta{font-size:15px!important}
+#pane-bp .leg,#pane-kp .leg,#pane-pd .leg{font-size:14px!important}
+/* 차트 SVG 텍스트: 사업계획·KPI만 +2.5 (겹침 방지). 보세물류센터 차트는 원본 유지 */
+#pane-bp .axl,#pane-kp .axl{font-size:13px!important}
+#pane-bp .mth,#pane-kp .mth{font-size:14.5px!important}
+#pane-bp .vlab,#pane-kp .vlab{font-size:13.5px!important}
+#pane-bp .achlab,#pane-kp .achlab{font-size:15px!important}
+/* 보세물류센터: 텍스트만 확대 (제목·라벨·설명·범례) */
+#pane-pd .pdplb .ph h3{font-size:18.5px!important}
+#pane-pd .pdplb .ph .d{font-size:14.5px!important}
+#pane-pd .pdstep .l{font-size:14px!important}
+#pane-pd .pdstep .s{font-size:13px!important}
+#pane-pd .arrow{font-size:18.5px!important}
+#pane-pd .pdchart-t{font-size:14.5px!important}
+#pane-pd .pdchart-t span{font-size:13.5px!important}
+#pane-pd .pdnote{font-size:14px!important}
+/* 보세물류센터 숫자 = 원본 크기 유지 (플로우 값). 차트 축/값/월 라벨은 위에서 미확대 → 원본 */
+#pane-pd .pdstep .v{font-size:18px!important}
+</style>
 </head>
 <body>
 <header>

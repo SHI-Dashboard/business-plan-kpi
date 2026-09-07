@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHI 주간 자금현황 보고서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<style>
+:root{--navy:#1f3a5f;--blue:#457b9d;--teal:#2a9d8f;--amber:#e9c46a;--orange:#f4a261;--red:#e76f51;--green:#2e8b57;--bg:#eef1f6;--card:#fff;--ink:#21303f;--muted:#6b7a8d;--line:#dde3ec;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Pretendard','Pretendard Variable','Segoe UI','Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;}
+header{background:linear-gradient(100deg,#1f3a5f,#2a5278);color:#fff;padding:20px 28px;box-shadow:0 2px 10px rgba(0,0,0,.12);}
+.h-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+header h1{font-size:22px;font-weight:800;letter-spacing:-.4px;}
+header .meta{font-size:14px;opacity:.95;margin-top:8px;display:flex;gap:18px;flex-wrap:wrap;}
+header .meta b{color:#ffe;font-weight:700;}
+.langbtn{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;}
+.langbtn:hover{background:rgba(255,255,255,.28);}
+main{padding:22px 28px 60px;max-width:1400px;margin:0 auto;}
+.sec{font-size:15px;font-weight:700;color:var(--navy);margin:26px 0 12px;padding-left:10px;border-left:4px solid var(--navy);display:flex;align-items:center;gap:8px;}
+.sec .tag{font-size:10.5px;font-weight:600;background:var(--navy);color:#fff;padding:2px 8px;border-radius:10px;}
+.hrk{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.diffc{cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px;}
+.diffc:hover{opacity:.7;}
+.subrow{display:none;}
+.subrow.open{display:table-row;}
+.subbox{background:#f7f9fc;border:1px solid #e4eaf2;border-radius:8px;padding:8px 10px;margin:2px 0;}
+.subbox .sh{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:4px;}
+.hc{position:relative;background:var(--card);border-radius:14px;padding:16px 17px 16px 19px;box-shadow:0 2px 8px rgba(31,58,95,.08);border:1px solid var(--line);overflow:hidden;transition:.15s;}
+.hc:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(31,58,95,.13);}
+.hc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--acc,#2a9d8f);}
+.hc .ic{position:absolute;right:13px;top:13px;font-size:22px;opacity:.20;}
+.hc .lab{font-size:11.5px;color:var(--muted);font-weight:700;}
+.hc .big{font-size:25px;font-weight:800;color:var(--navy);line-height:1.05;margin-top:6px;letter-spacing:-.5px;}
+.hc .big small{font-size:13px;font-weight:600;color:#5a6b7d;}
+.hc .sub2{font-size:11.5px;margin-top:6px;font-weight:600;color:var(--muted);}
+.up{color:var(--teal);}.down{color:var(--red);}
+.grid{display:grid;gap:14px;}
+.g2{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:repeat(3,1fr);}
+.card{background:var(--card);border-radius:12px;padding:16px 18px;box-shadow:0 1px 4px rgba(31,58,95,.07);border:1px solid var(--line);}
+.card h3{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.card .ch-sub{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.cv{position:relative;height:280px;}
+.cv.sm{height:230px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th,td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:right;}
+th:first-child,td:first-child{text-align:left;}
+thead th{background:#f3f6fa;color:var(--navy);font-weight:700;}
+.lvl0{font-weight:700;background:#eef2f7;}
+.pos{color:var(--teal);}.neg{color:var(--red);}
+.tgl{background:var(--navy);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;}
+.tgl:hover{background:#2a5278;}
+.wrap{max-height:0;overflow:hidden;transition:max-height .4s;}
+.wrap.open{max-height:1600px;overflow:auto;margin-top:12px;}
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;}
+.pill.ok{background:#e2f3ea;color:#1c6b41;}
+.note{background:#eef3f9;border-left:4px solid var(--blue);padding:11px 14px;border-radius:6px;font-size:13.5px;color:#3a4d61;margin-bottom:14px;}
+@media(max-width:1100px){.hrk{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){.g2,.g3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="h-row">
+    <div>
+      <h1 data-ko="💰 SHI 주간 자금현황 보고서" data-en="💰 SHI Weekly Cash Position Report"></h1>
+      <div style="margin-top:6px"><span style="display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;font-weight:700;color:#fff;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:2px 10px;border-radius:999px;letter-spacing:.02em">(Weekly Update)</span></div>
+      <div class="meta">
+        <span><span data-ko="전주 실적" data-en="Last Week Actual"></span> <b id="m-period"></b></span>
+        <span><span data-ko="적용환율" data-en="FX Rate"></span> <b id="m-rate"></b> IDR/USD</span>
+        <span data-ko="단위 <b>USD</b> (세부 IDR 병기)" data-en="Unit <b>USD</b> (details in IDR)"></span>
+      </div>
+    </div>
+    <button class="langbtn" id="langbtn" onclick="toggleLang()">EN</button>
+  </div>
+</header>
+<main>
+  <div class="note" id="topnote"></div>
+  <div class="sec"><span data-ko="핵심 지표" data-en="Key Indicators"></span> <span class="tag" data-ko="전주 실적 마감" data-en="Last Week Actual"></span></div>
+  <div class="hrk" id="kpi"></div>
+
+  <div class="sec"><span data-ko="전주 자금 흐름" data-en="Last Week Cash Flow"></span> <span class="tag">Cash Flow</span></div>
+  <div class="grid g2">
+    <div class="card"><h3 data-ko="자금흐름 워터폴" data-en="Cash Flow Waterfall"></h3><div class="ch-sub" data-ko="주초잔액 → 환전 → 수입 → 지출 → 주말잔액 (USD)" data-en="Start → FX → Receipt → Payment → Wk-end (USD)"></div><div class="cv"><canvas id="c_wf"></canvas></div></div>
+    <div class="card"><h3 data-ko="주차별 추이" data-en="Weekly Trend"></h3><div class="ch-sub" data-ko="수입·지출(막대) · 기말잔액(선) · W4는 계획(Plan)" data-en="Receipt·Payment(bar) · Ending(line) · W4 is Plan"></div><div class="cv"><canvas id="c_week"></canvas></div></div>
+  </div>
+
+  <div class="sec"><span data-ko="계획 대비 실적" data-en="Plan vs Actual"></span> <span class="tag">Plan vs Actual</span></div>
+  <div class="grid g2">
+    <div class="card"><h3 data-ko="수입 · 지출 · 예상잔액 — 계획 vs 실적" data-en="Receipt · Payment · Ending Balance — Plan vs Actual"></h3><div class="ch-sub" data-ko="전주 실적 기준 (USD)" data-en="Last week actual (USD)"></div><div class="cv sm"><canvas id="c_pva"></canvas></div></div>
+    <div class="card"><h3 data-ko="차이 요약 (실적 − 계획)" data-en="Variance (Actual − Plan)"></h3><div class="ch-sub" data-ko="달성률 및 주요 변동요인" data-en="Achievement & key drivers"></div><div id="pva_tbl"></div></div>
+  </div>
+
+  <div class="sec"><span data-ko="수입 · 지출 세부내역" data-en="Receipt · Payment Details"></span> <span class="tag" data-ko="토글 · 차이 클릭 시 세부" data-en="Toggle · click Diff for detail"></span>
+    <button class="tgl" style="margin-left:auto;font-size:11.5px;padding:7px 13px;background:var(--green)" onclick="downloadExcel()"><span data-ko="⬇ 엑셀 다운로드" data-en="⬇ Download Excel"></span></button></div>
+  <div class="grid g2">
+    <div class="card"><h3 data-ko="수입 세부 (계획 vs 실적)" data-en="Receipt Details (Plan vs Actual)"></h3><div class="ch-sub" data-ko="영업·투자·재무 활동 · <b>차이 금액 클릭</b> → 구성 거래처" data-en="Operating·Investing·Financing · <b>click Diff</b> → counterparties"></div>
+      <button class="tgl" data-tgl="recd" onclick="tg('recd')"></button><div class="wrap" id="recd"></div></div>
+    <div class="card"><h3 data-ko="지출 세부 (계획 vs 실적)" data-en="Payment Details (Plan vs Actual)"></h3><div class="ch-sub" data-ko="인건비·자재·경비·세금 · <b>차이 금액 클릭</b> → 구성 거래처" data-en="Labor·Material·Expense·Tax · <b>click Diff</b> → counterparties"></div>
+      <button class="tgl" data-tgl="payd" onclick="tg('payd')"></button><div class="wrap" id="payd"></div></div>
+  </div>
+
+  <div class="sec"><span data-ko="은행별 잔액 · 유동성" data-en="Bank Balances · Liquidity"></span> <span class="tag" data-ko="무차입" data-en="Debt-free"></span></div>
+  <div class="grid g2">
+    <div class="card"><h3 data-ko="은행별 보통예금 잔액 (주초 → 주말)" data-en="Bank Ordinary Deposits (Start → Wk-end)"></h3><div class="ch-sub" data-ko="단위 백만 IDR" data-en="Unit: million IDR"></div><div class="cv sm"><canvas id="c_bank"></canvas></div>
+      <button class="tgl" style="margin-top:10px" data-tgl="bankd" onclick="tg('bankd')"></button><div class="wrap" id="bankd"></div></div>
+    <div class="card"><h3 data-ko="유동성 구성" data-en="Liquidity Composition"></h3><div class="ch-sub" data-ko="가용현금 + 정기예금 (USD)" data-en="Available cash + time deposits (USD)"></div><div class="cv sm"><canvas id="c_liq"></canvas></div>
+      <button class="tgl" style="margin-top:10px" data-tgl="depd" onclick="tg('depd')"></button><div class="wrap" id="depd"></div></div>
+  </div>
+
+  <div class="sec"><span data-ko="자산 · 부채" data-en="Assets · Liabilities"></span> <span class="tag" data-ko="운전자본" data-en="Working Capital"></span></div>
+  <div class="grid g2">
+    <div class="card"><h3 data-ko="매출채권 · 매입채무" data-en="Accounts Receivable · Payable"></h3><div class="ch-sub" data-ko="AR / AP / 순채권 (USD)" data-en="AR / AP / Net (USD)"></div><div class="cv sm"><canvas id="c_arap"></canvas></div></div>
+    <div class="card"><h3 data-ko="자산·부채 요약" data-en="Assets·Liabilities Summary"></h3><div class="ch-sub" data-ko="기타 항목 포함" data-en="incl. other items"></div><div id="arap_tbl"></div></div>
+  </div>
+  <div class="sec" style="border-left-color:var(--amber);color:#8a6d1f"><span data-ko="금주 자금계획" data-en="This Week Cash Plan"></span> <span class="tag" style="background:var(--amber);color:#6b4e00">Plan · <span id="plan-period"></span></span></div>
+  <div class="note" id="plannote" style="background:#fdf6e6;border-left-color:var(--amber);color:#6b5320"></div>
+  <div class="hrk" id="plan-kpi"></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3 data-ko="금주 자금계획 워터폴" data-en="Cash Plan Waterfall"></h3><div class="ch-sub" data-ko="전주이월 → 입금예정 → 지출예정 → 예상잔액 (USD)" data-en="Carryover → Receipts → Payments → Ending (USD)"></div><div class="cv"><canvas id="c_pwf"></canvas></div></div>
+    <div class="card"><h3 data-ko="입금예정 (고객별)" data-en="Planned Receipts (by customer)"></h3><div class="ch-sub" data-ko="매출채권 회수 계획 · USD환산" data-en="AR collection plan · USD-eq"></div><div class="cv"><canvas id="c_pinc"></canvas></div></div>
+  </div>
+  <div class="note" id="foot" style="margin-top:26px;border-left-color:var(--muted);color:var(--muted);font-size:11.5px"></div>
+</main>
+<script>
+const CD={"period": "2026-08-31 ~ 09-05", "rate": 17722, "flow": {"prev_cash": 1956.9066696761088, "prev_dep": 2066519.9915172649, "prev_sub": 2068476.898186941, "exchange": 0, "receipt": 291290.89698623185, "payment": 203302.73194842567, "est_cash": 296.3265997065794, "est_dep": 2156168.736625041, "est_total": 2156465.0632247473, "prev_sub_idr": 1520169557.6089783, "est_total_idr": 5548625873.808979, "receipt_idr": 5161870582.35, "payment_idr": 1133414266.15}, "ar": 5566505.6636882275, "ap": 5770629.532608058, "banks": [{"name": "MANDIRI", "lastUSD": 1482.7999999999995, "lastIDR": 740743947.4049988, "thisUSD": 1479.3799999999994, "thisIDR": 4840222220.894995}, {"name": "WOORI SAUDARA (REGULER)", "lastUSD": 1980980.5, "lastIDR": 21068125.30999962, "thisUSD": 1841658.2199999997, "thisIDR": 21082440.119999617}, {"name": "WOORI SAUDARA (PROJECT)", "lastUSD": 0, "lastIDR": 693260408.8900003, "thisUSD": 0, "thisIDR": 663652936.7900003}, {"name": "SHINHAN BANK", "lastUSD": 235.0200000000021, "lastIDR": 30416776, "thisUSD": 235.0200000000021, "thisIDR": 18416776}], "dep_ord": {"last_usd": 1982698.32, "last_idr": 1485489257.6049986, "this_usd": 1843372.6199999996, "this_idr": 5543374373.804995}, "deposits": [{"bank": "MANDIRI", "idr": 250000000, "rate": 0.0225, "issue": "2026-08-31", "maturity": "2026-09-30"}, {"bank": "WOORI SAUDARA", "idr": 10000000000, "rate": 0.0525, "issue": "2026-04-01", "maturity": "2026-10-01"}], "deposit_total_usd": 578377.1583342737, "limits": [{"bank": "MANDIRI", "idr": 250000000}, {"bank": "WOORI SAUDARA", "idr": 10000000000}], "borrowing": 0, "weeks": {"rate": [17722, 0, 0, 17796], "lastbal": [2068476.898186941, 2156465.0632247473, 0, 0], "receipt": [291290.89698623185, 65418.90768536283, 0, 0], "payment": [203302.73194842567, 1476705.4850400633, 0, 0], "est": [2156465.0632247473, 745178.4858700468, 0, 0]}, "det_receipt": [{"ko": "매출채권 회수", "cat": "영업활동", "plan": 73324.4, "actual": 101312.2, "diff": 27987.8, "sub": [{"ven": "PT. CHOIL GLOBAL INDONESIA", "desc": "Trade Receivables", "pIDR": 6027300, "aIDR": 0, "pUSD": 0, "aUSD": 0}, {"ven": "PT. FENG TAY INDONESIA ENTERPRISES", "desc": "Trade Receivables", "pIDR": 51672996, "aIDR": 0, "pUSD": 0, "aUSD": 0}, {"ven": "PT. JASA BUANA SEJATI", "desc": "Trade Receivables", "pIDR": 1014269, "aIDR": 0, "pUSD": 0, "aUSD": 0}, {"ven": "PT. KUMKANG TECH INDONESIA", "desc": "Trade Receivables", "pIDR": 137183529, "aIDR": 137183529, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SERVEONE MRO INDONESIA", "desc": "Trade Receivables", "pIDR": 942591949, "aIDR": 0, "pUSD": 0, "aUSD": 0}, {"ven": "PT. YC TEC INDONESIA", "desc": "Trade Receivables", "pIDR": 160965256, "aIDR": 193562256, "pUSD": 0, "aUSD": 0}, {"ven": "CV. GADING TEKNIK MANDIRI", "desc": "Trade Receivables", "pIDR": 0, "aIDR": 76723200, "pUSD": 0, "aUSD": 0}, {"ven": "PT. LESTARI INOVASI KONSTRUKSI", "desc": "Trade Receivables", "pIDR": 0, "aIDR": 1387986180, "pUSD": 0, "aUSD": 0}]}, {"ko": "기타 수입 (VAT환급·이자·PS)", "cat": "영업활동", "plan": 0.0, "actual": 192418.9, "diff": 192418.9, "sub": [{"ven": "PT. SEO HEUNG INDORAYA", "desc": "PS Return", "pIDR": 0, "aIDR": 17400000, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SEO HEUNG INDORAYA", "desc": "PS Return", "pIDR": 0, "aIDR": 4892700, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SEO HEUNG INDORAYA", "desc": "PS Return", "pIDR": 0, "aIDR": 4983300, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SEO HEUNG INDORAYA", "desc": "PS Return", "pIDR": 0, "aIDR": 4930200, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SEO HEUNG INDORAYA", "desc": "PS Return", "pIDR": 0, "aIDR": 6104300, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SEO HEUNG INDORAYA", "desc": "PS Return", "pIDR": 0, "aIDR": 4935500, "pUSD": 0, "aUSD": 0}, {"ven": "KAS NEGARA", "desc": "VAT Return", "pIDR": 0, "aIDR": 3353126188, "pUSD": 0, "aUSD": 0}, {"ven": "Bank Interest", "desc": "Bank Interest", "pIDR": 0, "aIDR": 12882386.64, "pUSD": 0, "aUSD": 0.1}, {"ven": "Bank Interest", "desc": "Bank Interest", "pIDR": 0, "aIDR": 406842.71, "pUSD": 0, "aUSD": 21.72}]}], "det_payment": [{"ko": "매입채무 결제", "cat": "자재구매", "plan": 155197.6, "actual": 156465.7, "diff": 1268.1, "sub": [{"ven": "PT. ENDRESS+HAUSER INDONESIA", "desc": "Flowmeter Sensor", "pIDR": 91297000, "aIDR": 91297500, "pUSD": 0, "aUSD": 0}, {"ven": "PT. GROZ-BECKERT INDONESIA", "desc": "Needle", "pIDR": 29195775, "aIDR": 29195775, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SRI ARTHA NIAGA", "desc": "LED Lamp", "pIDR": 19425000, "aIDR": 19425000, "pUSD": 0, "aUSD": 0}, {"ven": "PT. NARATAMA SINAR PERKASA", "desc": "Polybag", "pIDR": 18812280, "aIDR": 35684280, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SENTRAL PERKASA TEKNIK", "desc": "Spare Part", "pIDR": 16878660, "aIDR": 16878660, "pUSD": 0, "aUSD": 0}, {"ven": "CV. ERA TEKNIK", "desc": "AC", "pIDR": 15099998, "aIDR": 15099998, "pUSD": 0, "aUSD": 0}, {"ven": "CV. ARTA JAYA TEKNIK", "desc": "Spare Part", "pIDR": 11011200, "aIDR": 11011200, "pUSD": 0, "aUSD": 0}, {"ven": "PT. KARISA SUKSES ABADI", "desc": "Consumable", "pIDR": 11000000, "aIDR": 11000000, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SUMBER ANEKA KARYA ABADI", "desc": "Consumable", "pIDR": 10036620, "aIDR": 0, "pUSD": 0, "aUSD": 0}, {"ven": "CV. DWIPUTRA MANDIRI", "desc": "Polishing Pad", "pIDR": 7770000, "aIDR": 0, "pUSD": 0, "aUSD": 0}, {"ven": "CV. KENCANA JAYA", "desc": "Teknik Tooling", "pIDR": 7603500, "aIDR": 7603500, "pUSD": 0, "aUSD": 0}, {"ven": "CV. HARINA JAYA AMKMUR", "desc": "Kuas SH Brush", "pIDR": 7076250, "aIDR": 8491500, "pUSD": 0, "aUSD": 0}, {"ven": "PT. HARRISMA INFORMATIKA JAYA", "desc": "IT & Printing", "pIDR": 4770003, "aIDR": 4770003, "pUSD": 0, "aUSD": 0}, {"ven": "PT. AGARINDO BIOLOGICAL", "desc": "Lab Tooling", "pIDR": 4218000, "aIDR": 0, "pUSD": 0, "aUSD": 0}, {"ven": "PT. MEGAH MAKMURINDO SENTOSA", "desc": "Grinder", "pIDR": 4162500, "aIDR": 4162500, "pUSD": 0, "aUSD": 0}, {"ven": "PT. KHARISMA BINTANG PERKASA MANDIRI", "desc": "Food Beverage & House Keeping", "pIDR": 2876565, "aIDR": 2876565, "pUSD": 0, "aUSD": 0}, {"ven": "PT. ELIM CITRA OFFSET", "desc": "Printing", "pIDR": 2745030, "aIDR": 2745030, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SUNINDO TUNAS MAKMUR", "desc": "CyanoAcrylate Glue & Happy Abr", "pIDR": 799200, "aIDR": 799200, "pUSD": 0, "aUSD": 0}, {"ven": "PT. MITRA GEMILANG SUKSES", "desc": "Spare Part", "pIDR": 288600, "aIDR": 288600, "pUSD": 0, "aUSD": 0}, {"ven": "ROCHLING", "desc": "Hy-71 Green (Machine)", "pIDR": 0, "aIDR": 0, "pUSD": 139146, "aUSD": 139164}, {"ven": "Cash Material Purchase", "desc": "", "pIDR": 19401000, "aIDR": 0, "pUSD": 0, "aUSD": 0}, {"ven": "CV. WISTERIA MAJU UTAMA", "desc": "Food Beverage & House Keeping", "pIDR": 0, "aIDR": 7808583, "pUSD": 0, "aUSD": 0}, {"ven": "CV. BUKIT INDAH PRATAMA", "desc": "Material Building", "pIDR": 0, "aIDR": 643800, "pUSD": 0, "aUSD": 0}, {"ven": "PT. XIN CHENG DA", "desc": "Silicon", "pIDR": 0, "aIDR": 11266500, "pUSD": 0, "aUSD": 0}, {"ven": "CV. WISTERIA MAJU UTAMA", "desc": "Food Beverage & House Keeping", "pIDR": 0, "aIDR": 1265000, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SAHABAT INDONESIA INTI MANDIRI", "desc": "Electrical tape", "pIDR": 0, "aIDR": 3456002, "pUSD": 0, "aUSD": 0}, {"ven": "PT. WENANG PALM SOLUSINDO", "desc": "Aqua", "pIDR": 0, "aIDR": 4810000, "pUSD": 0, "aUSD": 0}, {"ven": "PT. HOME CENTER INDONESIA RETAIL", "desc": "Dining Tablemaui  Set", "pIDR": 0, "aIDR": 2939020, "pUSD": 0, "aUSD": 0}, {"ven": "CV. EINNER CIPTA KREASI", "desc": "Equipment Desk", "pIDR": 0, "aIDR": 12043500, "pUSD": 0, "aUSD": 0}, {"ven": "CV. PRATAMA MAJU JAYA MANDIRI", "desc": "House Keeping", "pIDR": 0, "aIDR": 1058940, "pUSD": 0, "aUSD": 0}]}, {"ko": "현금 자재구매", "cat": "자재구매", "plan": 0.0, "actual": 310.6, "diff": 310.6, "sub": [{"ven": "TOKOPEDIA", "desc": "Cash Material Purchase- Bottle", "pIDR": 0, "aIDR": 171000, "pUSD": 0, "aUSD": 0}, {"ven": "PT. WAHANA DISTRIBUSINDO INDONESIA", "desc": "Cash Material Purchase- Spidol", "pIDR": 0, "aIDR": 421800, "pUSD": 0, "aUSD": 0}, {"ven": "SHOPEE", "desc": "Cash Material Purchase- Vixal", "pIDR": 0, "aIDR": 143300, "pUSD": 0, "aUSD": 0}, {"ven": "PT. TRENDY PROJECT AMANAH", "desc": "Cash Material Purchase- Unifor", "pIDR": 0, "aIDR": 2024000, "pUSD": 0, "aUSD": 0}, {"ven": "PT. ASPIRASI HIDUP INDONESIA", "desc": "Cash Material Purchase- Coffee", "pIDR": 0, "aIDR": 1019800, "pUSD": 0, "aUSD": 0}, {"ven": "PT. GRIYA CIKAMPEK", "desc": "Cash Material Purchase- Greenf", "pIDR": 0, "aIDR": 194400, "pUSD": 0, "aUSD": 0}, {"ven": "KURNIA ABADI PLASTIK", "desc": "Cash Material Purchase- Rubber", "pIDR": 0, "aIDR": 1530000, "pUSD": 0, "aUSD": 0}]}, {"ko": "경비 지출", "cat": "경상경비", "plan": 42336.5, "actual": 48966.7, "diff": 6630.2, "sub": [{"ven": "PT. BERKAT NIAGA DUNIA", "desc": "Safety Supplies", "pIDR": 22122300, "aIDR": 22122300, "pUSD": 0, "aUSD": 0}, {"ven": "PT. CAKRA USAHA MANDIRI SEJAHTERA", "desc": "Safety Supplies", "pIDR": 4961700, "aIDR": 17634570, "pUSD": 0, "aUSD": 0}, {"ven": "PT. SATU SCAN INDONESIA", "desc": "IT Supplies", "pIDR": 2442000, "aIDR": 2442000, "pUSD": 0, "aUSD": 0}, {"ven": "KAS NEGARA", "desc": "Payment fee - PNBP Mr. Seong Y", "pIDR": 200000, "aIDR": 200000, "pUSD": 0, "aUSD": 0}, {"ven": "KAS NEGARA", "desc": "Tax Department - PIB Impor Kas", "pIDR": 34000000, "aIDR": 69322928, "pUSD": 0, "aUSD": 0}, {"ven": "KAS NEGARA", "desc": "Tax Department - PIB Impor Cam", "pIDR": 15275000, "aIDR": 15058212, "pUSD": 0, "aUSD": 0}, {"ven": "KAS NEGARA", "desc": "Tax Department - PIB ImporGuan", "pIDR": 5000000, "aIDR": 4996483, "pUSD": 0, "aUSD": 0}, {"ven": "CV. POLINDO JAYA", "desc": "Freight Expense-Chemical Freig", "pIDR": 3259100, "aIDR": 3259100, "pUSD": 0, "aUSD": 0}, {"ven": "PT. RLC INDONESIA", "desc": "Freight Expense-Trucking PDPLB", "pIDR": 5014000, "aIDR": 5014000, "pUSD": 0, "aUSD": 0}, {"ven": "Freight expense - Transportation & Tol P", "desc": "Freight expense - Transportati", "pIDR": 25000000, "aIDR": 5688600, "pUSD": 0, "aUSD": 0}, {"ven": "Freight expense - Transportation & Tol P", "desc": "Freight expense - Transportati", "pIDR": 0, "aIDR": 4542200, "pUSD": 0, "aUSD": 0}, {"ven": "Freight expense - Transportation & Tol P", "desc": "Freight expense - Transportati", "pIDR": 0, "aIDR": 4384100, "pUSD": 0, "aUSD": 0}, {"ven": "Freight expense - Transportation & Tol P", "desc": "Freight expense - Transportati", "pIDR": 0, "aIDR": 4288700, "pUSD": 0, "aUSD": 0}, {"ven": "Freight expense - Transportation & Tol P", "desc": "Freight expense - Transportati", "pIDR": 0, "aIDR": 5125300, "pUSD": 0, "aUSD": 0}, {"ven": "Freight expense - Transportation & Tol P", "desc": "Freight expense - Transportati", "pIDR": 0, "aIDR": 3882300, "pUSD": 0, "aUSD": 0}, {"ven": "PT. RLC INDONESIA", "desc": "Rent - Rent PDPLB Office", "pIDR": 115520000, "aIDR": 115520000, "pUSD": 0, "aUSD": 0}, {"ven": "PT. Aufa Jaya Indonesia", "desc": "Rent - Photo Copy Machine Rent", "pIDR": 7961338, "aIDR": 7961338, "pUSD": 0, "aUSD": 0}, {"ven": "PT. Cipta Nugraha Indonesia", "desc": "Rent - E-Seal Device Rent (PDP", "pIDR": 3924000, "aIDR": 3924000, "pUSD": 0, "aUSD": 0}, {"ven": "Telephone Expense-Voucher Mobile phone", "desc": "Telephone Expense-Voucher Mobi", "pIDR": 1854000, "aIDR": 1854000, "pUSD": 0, "aUSD": 0}, {"ven": "Salary-Local Salary", "desc": "Salary-Local Salary", "pIDR": 475785000, "aIDR": 455721681, "pUSD": 0, "aUSD": 0}, {"ven": "Meals Expense", "desc": "Meals Expense", "pIDR": 1849000, "aIDR": 375000, "pUSD": 0, "aUSD": 0}, {"ven": "Meals Expense", "desc": "Meals Expense", "pIDR": 0, "aIDR": 80000, "pUSD": 0, "aUSD": 0}, {"ven": "Meals Expense", "desc": "Meals Expense", "pIDR": 0, "aIDR": 375000, "pUSD": 0, "aUSD": 0}, {"ven": "Meals Expense", "desc": "Meals Expense", "pIDR": 12000000, "aIDR": 12000000, "pUSD": 0, "aUSD": 0}, {"ven": "Supplies expense - Water Faucet", "desc": "Supplies expense - Water Fauce", "pIDR": 150000, "aIDR": 105000, "pUSD": 0, "aUSD": 0}, {"ven": "Supplies expense - House Keeping", "desc": "Supplies expense - House Keepi", "pIDR": 444300, "aIDR": 346600, "pUSD": 0, "aUSD": 0}, {"ven": "Welfare-Driver Boarding House", "desc": "Welfare-Driver Boarding House", "pIDR": 1750000, "aIDR": 1650000, "pUSD": 0, "aUSD": 0}, {"ven": "Entertainment  Weekly Plan", "desc": "Entertainment  Weekly Plan", "pIDR": 11775000, "aIDR": 0, "pUSD": 0, "aUSD": 0}, {"ven": "Welfare-Health For Expat", "desc": "Welfare-Health For Expat", "pIDR": 0, "aIDR": 5681400, "pUSD": 0, "aUSD": 0}, {"ven": "Welfare-Health For Expat", "desc": "Welfare-Health For Expat", "pIDR": 0, "aIDR": 2695000, "pUSD": 0, "aUSD": 0}, {"ven": "Welfare-Meals Expense", "desc": "Welfare-Meals Expense", "pIDR": 0, "aIDR": 279000, "pUSD": 0, "aUSD": 0}, {"ven": "Welfare-Meals Expense", "desc": "Welfare-Meals Expense", "pIDR": 0, "aIDR": 248700, "pUSD": 0, "aUSD": 0}, {"ven": "Advance Employee-PS", "desc": "Advance Employee-PS", "pIDR": 0, "aIDR": 9021000, "pUSD": 0, "aUSD": 0}, {"ven": "Advance Employee-PS", "desc": "Advance Employee-PS", "pIDR": 0, "aIDR": 12891300, "pUSD": 0, "aUSD": 0}, {"ven": "Advance Employee-PS", "desc": "Advance Employee-PS", "pIDR": 0, "aIDR": 16321700, "pUSD": 0, "aUSD": 0}, {"ven": "Advance Employee-PS", "desc": "Advance Employee-PS", "pIDR": 0, "aIDR": 6402000, "pUSD": 0, "aUSD": 0}, {"ven": "Advance Employee-PS", "desc": "Advance Employee-PS", "pIDR": 0, "aIDR": 5704300, "pUSD": 0, "aUSD": 0}, {"ven": "Advance Employee-PS", "desc": "Advance Employee-PS", "pIDR": 0, "aIDR": 4585500, "pUSD": 0, "aUSD": 0}, {"ven": "Bank Charge", "desc": "Bank Charge", "pIDR": 0, "aIDR": 2569058.15, "pUSD": 0, "aUSD": 3.52}, {"ven": "Bank Charge", "desc": "Bank Charge", "pIDR": 0, "aIDR": 11600, "pUSD": 0, "aUSD": 0}, {"ven": "Bank Charge", "desc": "Bank Charge", "pIDR": 0, "aIDR": 11600, "pUSD": 0, "aUSD": 180}, {"ven": "Bank Charge", "desc": "Bank Charge", "pIDR": 0, "aIDR": 11600, "pUSD": 0, "aUSD": 0}, {"ven": "Bank Charge", "desc": "Bank Charge", "pIDR": 0, "aIDR": 34800, "pUSD": 0, "aUSD": 0}, {"ven": "KAP HENDRAWINATA HANNY ERWIN & SUMARGO", "desc": "Profesional Exp-Training PSAK ", "pIDR": 0, "aIDR": 490991, "pUSD": 0, "aUSD": 0}, {"ven": "DELITTE TOUCHE SOLUTIONS", "desc": "Profesional Exp-Monthly Payrol", "pIDR": 0, "aIDR": 6437813, "pUSD": 0, "aUSD": 0}, {"ven": "KAS NEGARA", "desc": "Tax Department - PIB Impor Duk", "pIDR": 0, "aIDR": 22287736, "pUSD": 0, "aUSD": 0}, {"ven": "PT. CIPTA PIRANTI SEJAHTERA", "desc": "Profesional Expense-Accurate O", "pIDR": 0, "aIDR": 976800, "pUSD": 0, "aUSD": 0}]}], "pva": {"receipt": [73324.4, 291290.9], "payment": [197534.1, 203302.7], "est": [1944267.2, 2156465.1]}, "nextplan": {"receipt": 4521464.337123241, "payment": 4046984.5051841056, "est": 1962532.363958077}, "cust": {"weekly": [{"ven": "PT. CHOIL GLOBAL INDONESIA", "pUSD": 0.0, "pIDR": 1998000.0, "aUSD": 0.0, "aIDR": 1998000.0, "dUSD": 0.0, "dIDR": 0.0}, {"ven": "PT. FENG TAY INDONESIA ENTERPRISES", "pUSD": 0.0, "pIDR": 161693810.0, "aUSD": 0.0, "aIDR": 114753507.0, "dUSD": 0.0, "dIDR": -46940303.0}, {"ven": "PT. GLOVIS INDONESIA INTERNATIONAL", "pUSD": 0.0, "pIDR": 394050.0, "aUSD": 0.0, "aIDR": 394050.0, "dUSD": 0.0, "dIDR": 0.0}, {"ven": "PT. HANJIN INSOLE INDONESIA", "pUSD": 0.0, "pIDR": 3529800.0, "aUSD": 0.0, "aIDR": 0.0, "dUSD": 0.0, "dIDR": -3529800.0}, {"ven": "PT. TKG TAEKWANG CIREBON", "pUSD": 0.0, "pIDR": 1726716.0, "aUSD": 0.0, "aIDR": 1340880.0, "dUSD": 0.0, "dIDR": -385836.0}, {"ven": "PT. TKG TAEKWANG INDONESIA", "pUSD": 0.0, "pIDR": 46545468.0, "aUSD": 0.0, "aIDR": 46545468.0, "dUSD": 0.0, "dIDR": 0.0}, {"ven": "PT. CHANG SHIN INDONESIA", "pUSD": 0, "pIDR": 23020869055.5, "aUSD": 0.0, "aIDR": 23038123715.0, "dUSD": 0.0, "dIDR": 17254659.5}], "noplan": [{"ven": "PT. SAKA FARMA LABORATORIES", "pUSD": 0.0, "pIDR": 0.0, "aUSD": 0.0, "aIDR": 2556330.0, "dUSD": 0.0, "dIDR": 2556330.0}, {"ven": "PT. HANARA JAYA GLOBAL", "pUSD": 0.0, "pIDR": 0.0, "aUSD": 0.0, "aIDR": 371374920.0, "dUSD": 0.0, "dIDR": 371374920.0}, {"ven": "ECO LASER", "pUSD": 0.0, "pIDR": 0.0, "aUSD": 32000.0, "aIDR": 0.0, "dUSD": 32000.0, "dIDR": 0.0}, {"ven": "PT. SURYA MEGA ABADI", "pUSD": 0.0, "pIDR": 0.0, "aUSD": 0.0, "aIDR": 2775000.0, "dUSD": 0.0, "dIDR": 2775000.0}, {"ven": "CHANG SHIN VIETNAM COMPANY LTD", "pUSD": 0.0, "pIDR": 0.0, "aUSD": 9255.2, "aIDR": 0.0, "dUSD": 9255.2, "dIDR": 0.0}], "interest": [{"ven": "BANK INTEREST", "pUSD": 0.0, "pIDR": 0.0, "aUSD": 0.0, "aIDR": 11464.0, "dUSD": 0.0, "dIDR": 11464.0}]}, "plan": {"period": "2026-09-07 ~ 09-12", "prev": 2156465.0632247473, "receipt": 65418.90768536283, "payment": 1476705.4850400633, "est": 745178.4858700469, "prev_cash": 296.3265997065794, "prev_dep": 2156168.736625041, "est_cash": 296.3265997065794, "est_dep": 744882.1592703403, "income": [{"ko": "OTHERS (기타)", "usd": 0.0, "idr": 1159353882.0, "ueq": 65418.9}]}, "actual_period": "2026-08-31 ~ 09-05"};
+let LANG='ko';
+const C={navy:'#1f3a5f',blue:'#457b9d',teal:'#2a9d8f',amber:'#e9c46a',orange:'#f4a261',red:'#e76f51',green:'#2e8b57',gray:'#8d99ae'};
+Chart.defaults.font.family="'Pretendard','Segoe UI','Malgun Gothic',sans-serif";Chart.defaults.font.size=11;
+const tr=(ko,en)=>LANG==='ko'?ko:en;
+const usd=v=>v==null||isNaN(v)?'–':'$'+Math.round(v).toLocaleString();
+const usdK=v=>{if(v==null||isNaN(v))return '–';const a=Math.abs(v);if(a>=1e6)return '$'+(v/1e6).toFixed(2)+'M';if(a>=1e3)return '$'+(v/1e3).toFixed(0)+'K';return '$'+Math.round(v);};
+const idr=v=>!v?'–':Math.round(v).toLocaleString();
+const idrM=v=>(v/1e6).toLocaleString(undefined,{maximumFractionDigits:0})+'M';
+const F=CD.flow, PV=CD.pva;
+const netFlow=F.est_total-F.prev_sub, avail=F.est_total, liqTotal=F.est_total+CD.deposit_total_usd, netWC=CD.ar-CD.ap, estVar=PV.est[1]-PV.est[0];
+let charts=[];
+function i18nStatic(){document.querySelectorAll('[data-ko]').forEach(el=>{el.innerHTML=(LANG==='ko'?el.dataset.ko:el.dataset.en)||'';});
+ document.querySelectorAll('[data-tgl]').forEach(b=>{const id=b.dataset.tgl,open=document.getElementById(id).classList.contains('open');
+  const lbl={recd:[tr('▶ 수입 항목 펼치기','▶ Expand receipts')],payd:[tr('▶ 지출 항목 펼치기','▶ Expand payments')],bankd:[tr('▶ 은행별 상세 (USD·IDR)','▶ Bank detail (USD·IDR)')],depd:[tr('▶ 정기예금·한도 상세','▶ Deposits·limits detail')]}[id][0];
+  b.dataset.lbl=lbl;b.textContent=open?tr('▼ 접기','▼ Collapse'):lbl;});}
+function hc(acc,ic,lab,big,sub){return `<div class="hc" style="--acc:${acc}"><span class="ic">${ic}</span><div class="lab">${lab}</div><div class="big">${big}</div>${sub?`<div class="sub2">${sub}</div>`:''}</div>`;}
+function renderDynamic(){
+ document.getElementById('m-period').textContent=CD.period;
+ document.getElementById('m-rate').textContent=CD.rate.toLocaleString();
+ document.getElementById('langbtn').textContent=LANG==='ko'?'EN':'한국어';
+ document.documentElement.lang=LANG;
+ // topnote
+ document.getElementById('topnote').innerHTML= LANG==='ko'
+  ? `전주말(${CD.actual_period}) 가용현금 <b>${usd(avail)}</b> (직전주 대비 ${netFlow>=0?'▲':'▼'} ${usd(Math.abs(netFlow))}), 정기예금 포함 총 유동성 <b>${usd(liqTotal)}</b>. <span class="pill ok">차입금 0 · 무차입</span> 순운전자본(AR−AP) <b class="${netWC>=0?'pos':'neg'}">${(netWC>=0?'+':'')+usd(netWC)}</b>. 예상잔액 계획 대비 <b class="${estVar>=0?'pos':'neg'}">${(estVar>=0?'+':'')+usd(estVar)}</b>.`
+  : `Last week-end (${CD.actual_period}) available cash <b>${usd(avail)}</b> (${netFlow>=0?'▲':'▼'} ${usd(Math.abs(netFlow))} vs prior), total liquidity incl. deposits <b>${usd(liqTotal)}</b>. <span class="pill ok">Debt-free (0 borrowings)</span> Net working capital (AR−AP) <b class="${netWC>=0?'pos':'neg'}">${(netWC>=0?'+':'')+usd(netWC)}</b>. Ending balance vs plan <b class="${estVar>=0?'pos':'neg'}">${(estVar>=0?'+':'')+usd(estVar)}</b>.`;
+ // KPI
+ document.getElementById('kpi').innerHTML=
+  hc(C.navy,'🏦',tr('가용현금 (현금+보통예금)','Available Cash (cash+deposit)'),usd(avail),tr('전주','Prev')+' '+usd(F.prev_sub))+
+  hc(C.teal,'📈',tr('전주 순현금흐름','Net Cash Flow'),(netFlow>=0?'+':'')+usd(netFlow),tr('수입','Receipt')+' '+usdK(F.receipt)+' − '+tr('지출','Payment')+' '+usdK(F.payment))+
+  hc(C.blue,'💵',tr('총 유동성 (예금포함)','Total Liquidity (incl. deposits)'),usd(liqTotal),tr('정기예금','Time deposits')+' '+usd(CD.deposit_total_usd))+
+  hc(C.green,'✅',tr('차입금','Borrowings'),'$0',tr('무차입 · 유동성한도 여유','Debt-free · ample limit'))+
+  hc(C.amber,'🧾',tr('매출채권 (AR)','Accounts Receivable (AR)'),usd(CD.ar),tr('회수 대상','to collect'))+
+  hc(C.orange,'📮',tr('매입채무 (AP)','Accounts Payable (AP)'),usd(CD.ap),tr('지급 예정','to pay'))+
+  hc(C.navy,'⚖️',tr('순운전자본 (AR−AP)','Net Working Capital (AR−AP)'),(netWC>=0?'+':'')+usd(netWC),'AR '+usdK(CD.ar)+' / AP '+usdK(CD.ap))+
+  hc(C.blue,'🏦',tr('정기예금','Time Deposits'),usd(CD.deposit_total_usd),CD.deposits.length+tr('건 · 이자수익',' · interest earning'));
+ // PVA table
+ const rows=[[tr('수입','Receipt'),PV.receipt[0],PV.receipt[1]],[tr('지출','Payment'),PV.payment[0],PV.payment[1]],[tr('예상잔액','Ending Bal.'),PV.est[0],PV.est[1]]];
+ document.getElementById('pva_tbl').innerHTML='<table><thead><tr><th>'+tr('구분','Item')+'</th><th>'+tr('계획','Plan')+'</th><th>'+tr('실적','Actual')+'</th><th>'+tr('차이','Diff')+'</th><th>'+tr('달성률','Ach.')+'</th></tr></thead><tbody>'+
+  rows.map((r,ix)=>{const d=r[2]-r[1];const good=(ix===1)?d<=0:d>=0;return `<tr><td>${r[0]}</td><td>${usd(r[1])}</td><td>${usd(r[2])}</td><td class="${good?'pos':'neg'}">${(d>=0?'+':'')+usd(d)}</td><td>${r[1]?(r[2]/r[1]*100).toFixed(0)+'%':'–'}</td></tr>`;}).join('')+
+  '</tbody></table><div style="font-size:11.5px;color:var(--muted);margin-top:8px">'+(LANG==='ko'
+    ?'지출은 계획 대비 절감(−)이 긍정. 이번 주 예상잔액이 계획을 <b class="pos">'+usd(estVar)+'</b> 상회 — 자재대금 지출 이연 및 매출채권 초과 회수 영향.'
+    :'For payments, under-spend (−) is favorable. Ending balance beat plan by <b class="pos">'+usd(estVar)+'</b> — deferred material payments & excess AR collection.')+'</div>';
+ // bank detail
+ const banks=CD.banks.filter(b=>b.name);
+ document.getElementById('bankd').innerHTML='<table><thead><tr><th>'+tr('은행','Bank')+'</th><th>'+tr('주초','Start')+' USD</th><th>'+tr('주초','Start')+' IDR</th><th>'+tr('주말','End')+' USD</th><th>'+tr('주말','End')+' IDR</th></tr></thead><tbody>'+
+  banks.map(b=>`<tr><td>${b.name}</td><td>${usd(b.lastUSD)}</td><td>${idrM(b.lastIDR)}</td><td>${usd(b.thisUSD)}</td><td>${idrM(b.thisIDR)}</td></tr>`).join('')+
+  `<tr class="lvl0"><td>${tr('보통예금 소계','Ordinary subtotal')}</td><td>${usd(CD.dep_ord.last_usd)}</td><td>${idrM(CD.dep_ord.last_idr)}</td><td>${usd(CD.dep_ord.this_usd)}</td><td>${idrM(CD.dep_ord.this_idr)}</td></tr></tbody></table>`;
+ // dep detail
+ document.getElementById('depd').innerHTML='<table><thead><tr><th>'+tr('은행','Bank')+'</th><th>'+tr('금액(IDR)','Amount(IDR)')+'</th><th>'+tr('이자율','Rate')+'</th><th>'+tr('가입일','Issue')+'</th><th>'+tr('만기일','Maturity')+'</th></tr></thead><tbody>'+
+  CD.deposits.map(d=>`<tr><td>${d.bank}</td><td>${idrM(d.idr)}</td><td>${(d.rate*100).toFixed(2)}%</td><td>${d.issue}</td><td>${d.maturity}</td></tr>`).join('')+
+  `<tr class="lvl0"><td>${tr('정기예금 합계','Time deposit total')}</td><td>${idrM(CD.deposits.reduce((a,b)=>a+b.idr,0))}</td><td colspan="3">≈ ${usd(CD.deposit_total_usd)}</td></tr></tbody></table>`+
+  '<div style="font-size:11.5px;color:var(--muted);margin-top:8px">'+tr('금융기관 유동성 한도: ','Liquidity limits: ')+CD.limits.map(l=>l.bank+' '+idrM(l.idr)).join(' · ')+tr(' · 차입금 0 (무차입)',' · Borrowings 0 (debt-free)')+'</div>';
+ // arap table
+ document.getElementById('arap_tbl').innerHTML='<table><tbody>'+
+  [[tr('매출채권 (AR)','Accounts Receivable (AR)'),CD.ar,'pos'],[tr('매입채무 (AP)','Accounts Payable (AP)'),CD.ap,'neg'],[tr('순운전자본 (AR−AP)','Net Working Capital'),netWC,netWC>=0?'pos':'neg'],[tr('선급금 / 선수금','Advances paid / received'),'0',''],[tr('기타미수금 / 미지급금','Other receiv./payables'),'0','']]
+  .map(r=>`<tr><td>${r[0]}</td><td class="${r[2]}"><b>${typeof r[1]==='number'?usd(r[1]):r[1]}</b></td></tr>`).join('')+
+  '</tbody></table><div style="font-size:11.5px;color:var(--muted);margin-top:8px">'+tr('AR &gt; AP 로 순채권 우위 · 회수관리 시 유동성 개선 여력.','AR &gt; AP → net receivable position; collection management can further improve liquidity.')+'</div>';
+ detTable('recd',CD.det_receipt);detTable('payd',CD.det_payment);
+ // ---- 금주 자금계획 ----
+ const PL=CD.plan, pNet=PL.est-PL.prev;
+ document.getElementById('plan-period').textContent=PL.period;
+ document.getElementById('plannote').innerHTML= LANG==='ko'
+  ? `금주(${PL.period}) 입금예정 <b>${usd(PL.receipt)}</b> (JJ·RJ 매출채권 중심), 지출예정 <b>${usd(PL.payment)}</b>, 최종 예상잔액 <b>${usd(PL.est)}</b> — 전주이월 ${usd(PL.prev)} 대비 ${pNet>=0?'▲':'▼'} ${usd(Math.abs(pNet))}. 대규모 자재대금 결제 예정.`
+  : `This week (${PL.period}) planned receipts <b>${usd(PL.receipt)}</b> (mainly JJ·RJ AR), payments <b>${usd(PL.payment)}</b>, projected ending <b>${usd(PL.est)}</b> — ${pNet>=0?'▲':'▼'} ${usd(Math.abs(pNet))} vs carryover ${usd(PL.prev)}. Large material payments scheduled.`;
+ document.getElementById('plan-kpi').innerHTML=
+  hc(C.gray,'📦',tr('전주 이월시재','Carryover'),usd(PL.prev),tr('직전주 말잔액','Prior wk-end'))+
+  hc(C.teal,'📥',tr('금주 입금예정','Planned Receipts'),usd(PL.receipt),tr('매출채권 회수','AR collection'))+
+  hc(C.red,'📤',tr('금주 지출예정','Planned Payments'),usd(PL.payment),tr('자재대금·경비','Material·expenses'))+
+  hc(C.navy,'🎯',tr('금주 예상잔액','Projected Ending'),usd(PL.est),(pNet>=0?'+':'')+usd(pNet)+tr(' 순증감',' net'));
+ // foot
+ document.getElementById('foot').innerHTML= LANG==='ko'
+  ?'원천: 주간 SHI Weekly Funds Position (거래단위 상세) · 매주 갱신 · 샘플 단계. 상단=전주 실적('+CD.actual_period+'), 하단=차주 자금계획('+CD.plan.period+'). USD 환산(환율 '+CD.rate.toLocaleString()+' IDR/USD), 세부는 IDR·USD 구분. 세부 합계는 거래단위(내부 대체 제외)로 요약 흐름과 소폭 차이날 수 있음.'
+  :'Source: Weekly SHI Funds Position (transaction-level) · updated weekly · sample. Top = last-week actual ('+CD.actual_period+'), bottom = next-week plan ('+CD.plan.period+'). USD converted (rate '+CD.rate.toLocaleString()+' IDR/USD); details in IDR·USD. Detail totals are transaction-level (excl. internal transfers) and may differ slightly from summary flow.';
+}
+// ---- detail tables (clickable diff -> vendor breakdown, IDR & USD) ----
+function subHtml(i){if(!i.sub||!i.sub.length)return '<div class="subbox"><span style="color:var(--muted)">'+tr('세부 거래처 정보 없음','No counterparty detail')+'</span></div>';
+ const only=i.sub.length===1&&i.sub[0].ven==='(거래처 미기재)';
+ const rows=i.sub.map(s=>{const dI=(s.aIDR||0)-(s.pIDR||0),dU=(s.aUSD||0)-(s.pUSD||0);const vn=only?tr('(거래처 미기재)','(not specified)'):s.ven;
+  return `<tr><td>${vn}</td><td>${idr(s.pIDR)}</td><td>${idr(s.aIDR)}</td><td class="${dI>=0?'pos':'neg'}">${dI?(dI>0?'+':'')+idr(dI):'–'}</td><td>${s.pUSD?usd(s.pUSD):'–'}</td><td>${s.aUSD?usd(s.aUSD):'–'}</td><td class="${dU>=0?'pos':'neg'}">${dU?(dU>0?'+':'')+usd(dU):'–'}</td></tr>`;}).join('');
+ return `<div class="subbox"><div class="sh">${tr('「'+i.ko+'」 구성 거래처 · IDR·USD 계획대비실적','「'+i.ko+'」 counterparties · IDR·USD Plan vs Actual')} (${tr('합계 차이','total diff')} ${(i.diff>=0?'+':'')+usd(i.diff)})</div>
+  <table style="font-size:11px"><thead><tr><th>${tr('거래처','Counterparty')}</th><th>${tr('계획','Plan')} IDR</th><th>${tr('실적','Actual')} IDR</th><th>${tr('차이','Diff')} IDR</th><th>${tr('계획','Plan')} $</th><th>${tr('실적','Actual')} $</th><th>${tr('차이','Diff')} $</th></tr></thead><tbody>${rows}</tbody></table>
+  ${only?'<div style="font-size:11px;color:var(--muted);margin-top:5px">'+tr('※ 원자료에 거래처 세부가 없어 합계만 표기.','※ Source has no counterparty detail; total only.')+'</div>':''}</div>`;}
+function toggleSub(id){document.getElementById(id).classList.toggle('open');}
+function detTable(id,items){let tp=0,ta=0;let h='<table><thead><tr><th>'+tr('항목','Item')+'</th><th>'+tr('구분','Group')+'</th><th>'+tr('계획','Plan')+'</th><th>'+tr('실적','Actual')+'</th><th>'+tr('차이','Diff')+' ▾</th></tr></thead><tbody>';
+ items.forEach((i,ix)=>{const d=i.actual-i.plan;tp+=i.plan;ta+=i.actual;const sid=id+'_s'+ix;
+  h+=`<tr><td>${i.ko}</td><td style="text-align:left;color:var(--muted);font-size:11px">${i.cat}</td><td>${usd(i.plan)}</td><td>${usd(i.actual)}</td><td class="${d>=0?'pos':'neg'} diffc" onclick="toggleSub('${sid}')">${(d>=0?'+':'')+usd(d)}</td></tr>`;
+  h+=`<tr class="subrow" id="${sid}"><td colspan="5" style="background:#fafcff">${subHtml(i)}</td></tr>`;});
+ h+=`<tr class="lvl0"><td>${tr('합계','Total')}</td><td></td><td>${usd(tp)}</td><td>${usd(ta)}</td><td class="${ta-tp>=0?'pos':'neg'}">${(ta-tp>=0?'+':'')+usd(ta-tp)}</td></tr></tbody></table>`;
+ document.getElementById(id).innerHTML=h;}
+// ---- charts ----
+function drawCharts(){
+ charts.forEach(c=>c.destroy());charts=[];
+ const s0=F.prev_sub,s1=s0+F.exchange,s2=s1+F.receipt,s3=s2-F.payment;
+ const wfLab=[tr('주초 잔액','Start Bal.'),tr('환전','FX'),tr('수입','Receipt'),tr('지출','Payment'),tr('주말 잔액','Wk-end Bal.')];
+ const wfRange=[[0,s0],[s0,s1],[s1,s2],[s3,s2],[0,F.est_total]],wfCol=[C.navy,C.blue,C.teal,C.red,C.navy],wfDelta=[s0,F.exchange,F.receipt,-F.payment,F.est_total];
+ charts.push(new Chart(document.getElementById('c_wf'),{type:'bar',data:{labels:wfLab,datasets:[{data:wfRange,backgroundColor:wfCol,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(wfDelta[c.dataIndex]>=0?'+':'')+usd(wfDelta[c.dataIndex])}},
+   datalabels:{anchor:'end',align:'top',color:'#33485f',font:{weight:'700',size:10.5},formatter:(v,ctx)=>{const d=wfDelta[ctx.dataIndex];return (d>=0?'+':'−')+usdK(Math.abs(d));}}},scales:{y:{ticks:{callback:v=>usdK(v)}}}},plugins:[ChartDataLabels]}));
+ const wk=CD.weeks,wl=[tr('1주차','W1'),tr('2주차','W2'),tr('3주차','W3'),tr('4주차(계획)','W4(Plan)')],idx=[0,1,2,3];
+ charts.push(new Chart(document.getElementById('c_week'),{data:{labels:wl,datasets:[
+  {type:'bar',label:tr('수입','Receipt'),data:idx.map(i=>wk.receipt[i]),backgroundColor:C.teal,borderRadius:3},
+  {type:'bar',label:tr('지출','Payment'),data:idx.map(i=>wk.payment[i]),backgroundColor:C.red,borderRadius:3},
+  {type:'line',label:tr('기말잔액','Ending'),data:idx.map(i=>wk.est[i]),borderColor:C.navy,backgroundColor:C.navy,tension:.3,pointRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+usd(c.raw)}},datalabels:{display:false}},scales:{y:{ticks:{callback:v=>usdK(v)}}}},plugins:[ChartDataLabels]}));
+ charts.push(new Chart(document.getElementById('c_pva'),{type:'bar',data:{labels:[tr('수입','Receipt'),tr('지출','Payment'),tr('예상잔액','Ending Bal.')],datasets:[
+  {label:tr('계획','Plan'),data:[PV.receipt[0],PV.payment[0],PV.est[0]],backgroundColor:C.amber,borderRadius:4},
+  {label:tr('실적','Actual'),data:[PV.receipt[1],PV.payment[1],PV.est[1]],backgroundColor:C.navy,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:20}},plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+usd(c.raw)}},datalabels:{anchor:'end',align:'top',color:'#33485f',font:{weight:'700',size:10},formatter:v=>usdK(v)}},scales:{y:{ticks:{callback:v=>usdK(v)}}}},plugins:[ChartDataLabels]}));
+ const banks=CD.banks.filter(b=>b.name);
+ charts.push(new Chart(document.getElementById('c_bank'),{type:'bar',data:{labels:banks.map(b=>b.name.replace('WOORI SAUDARA','WOORI').replace(' BANK','')),datasets:[
+  {label:tr('주초','Start'),data:banks.map(b=>b.lastIDR/1e6),backgroundColor:C.gray,borderRadius:3},
+  {label:tr('주말','Wk-end'),data:banks.map(b=>b.thisIDR/1e6),backgroundColor:C.navy,borderRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+idrM(c.raw*1e6)+' IDR'}},datalabels:{display:false}},scales:{y:{ticks:{callback:v=>v.toLocaleString()+'M'}}}},plugins:[ChartDataLabels]}));
+ charts.push(new Chart(document.getElementById('c_liq'),{type:'doughnut',data:{labels:[tr('가용현금','Available cash'),tr('정기예금','Time deposits')],datasets:[{data:[avail,CD.deposit_total_usd],backgroundColor:[C.teal,C.blue],borderWidth:2,borderColor:'#fff'}]},
+  options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.label+': '+usd(c.raw)+' ('+(c.raw/liqTotal*100).toFixed(0)+'%)'}},datalabels:{color:'#fff',font:{weight:'700',size:12},formatter:v=>usdK(v)+'\n'+(v/liqTotal*100).toFixed(0)+'%'}}},plugins:[ChartDataLabels]}));
+ charts.push(new Chart(document.getElementById('c_arap'),{type:'bar',data:{labels:['AR',
+  'AP',tr('순채권','Net')],datasets:[{data:[CD.ar,CD.ap,netWC],backgroundColor:[C.teal,C.orange,C.navy],borderRadius:5}]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:20}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>usd(c.raw)}},datalabels:{anchor:'end',align:'top',color:'#33485f',font:{weight:'700'},formatter:v=>usdK(v)}},scales:{y:{ticks:{callback:v=>usdK(v)}}}},plugins:[ChartDataLabels]}));
+ // ---- 금주 자금계획 charts ----
+ const PL=CD.plan, q0=PL.prev,q1=q0+PL.receipt,q2=q1-PL.payment;
+ const pwLab=[tr('전주 이월','Carryover'),tr('입금예정','Receipts'),tr('지출예정','Payments'),tr('예상잔액','Ending')];
+ const pwRange=[[0,q0],[q0,q1],[q2,q1],[0,PL.est]],pwCol=[C.gray,C.teal,C.red,C.amber],pwDelta=[q0,PL.receipt,-PL.payment,PL.est];
+ charts.push(new Chart(document.getElementById('c_pwf'),{type:'bar',data:{labels:pwLab,datasets:[{data:pwRange,backgroundColor:pwCol,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:22}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(pwDelta[c.dataIndex]>=0?'+':'')+usd(pwDelta[c.dataIndex])}},
+   datalabels:{anchor:'end',align:'top',color:'#33485f',font:{weight:'700',size:10.5},formatter:(v,ctx)=>{const d=pwDelta[ctx.dataIndex];return (d>=0?'+':'−')+usdK(Math.abs(d));}}},scales:{y:{ticks:{callback:v=>usdK(v)}}}},plugins:[ChartDataLabels]}));
+ charts.push(new Chart(document.getElementById('c_pinc'),{type:'bar',data:{labels:PL.income.map(x=>x.ko),datasets:[{label:tr('입금예정','Planned'),data:PL.income.map(x=>x.ueq),backgroundColor:C.teal,borderRadius:5,maxBarThickness:60}]},
+  options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:20}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>usd(c.raw)}},
+   datalabels:{anchor:'end',align:'top',color:'#33485f',font:{weight:'700',size:10.5},formatter:v=>usdK(v)}},scales:{y:{ticks:{callback:v=>usdK(v)}}}},plugins:[ChartDataLabels]}));
+}
+function render(){i18nStatic();renderDynamic();drawCharts();}
+function toggleLang(){LANG=LANG==='ko'?'en':'ko';render();}
+function tg(id){const w=document.getElementById(id),b=w.previousElementSibling;w.classList.toggle('open');b.textContent=w.classList.contains('open')?tr('▼ 접기','▼ Collapse'):(b.dataset.lbl||b.textContent);}
+// ---- Excel (ExcelJS · Pretendard · blue header · IDR/USD) ----
+function styleRow(row,opt){opt=opt||{};row.eachCell({includeEmpty:true},(cell,col)=>{
+ cell.font={name:'Pretendard',size:10,bold:!!opt.bold,color:{argb:opt.white?'FFFFFFFF':'FF21303F'}};
+ if(opt.fill)cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:opt.fill}};
+ cell.border={top:{style:'thin',color:{argb:'FFE2E8F0'}},bottom:{style:'thin',color:{argb:'FFE2E8F0'}},left:{style:'thin',color:{argb:'FFE2E8F0'}},right:{style:'thin',color:{argb:'FFE2E8F0'}}};
+ if(col>=3&&col<=5)cell.numFmt='#,##0;-#,##0;"-"'; if(col>=6&&col<=8)cell.numFmt='$#,##0;-$#,##0;"-"';
+ cell.alignment={vertical:'middle',horizontal:col<=2?'left':'right'};});row.height=18;}
+function buildSheet(ws,items){
+ ws.columns=[{width:16},{width:32},{width:17},{width:17},{width:16},{width:13},{width:13},{width:13}];
+ const t=ws.addRow(['SHI '+tr('주간자금','Weekly Cash')+' · '+ws.name+' · '+CD.period]);ws.mergeCells(1,1,1,8);
+ t.getCell(1).font={name:'Pretendard',size:12,bold:true,color:{argb:'FFFFFFFF'}};t.getCell(1).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF1F3A5F'}};t.getCell(1).alignment={vertical:'middle',horizontal:'left'};t.height=24;
+ styleRow(ws.addRow([tr('구분','Group'),tr('항목 / 거래처','Item / Counterparty'),tr('계획','Plan')+' (IDR)',tr('실적','Actual')+' (IDR)',tr('차이','Diff')+' (IDR)',tr('계획','Plan')+' (USD)',tr('실적','Actual')+' (USD)',tr('차이','Diff')+' (USD)']),{fill:'FF2A5278',white:true,bold:true});
+ let TpI=0,TaI=0,TpU=0,TaU=0;
+ items.forEach(i=>{const sub=i.sub||[];const pI=sub.reduce((a,s)=>a+(s.pIDR||0),0),aI=sub.reduce((a,s)=>a+(s.aIDR||0),0);const pU=sub.reduce((a,s)=>a+(s.pUSD||0),0),aU=sub.reduce((a,s)=>a+(s.aUSD||0),0);TpI+=pI;TaI+=aI;TpU+=pU;TaU+=aU;
+  styleRow(ws.addRow([i.cat,i.ko,pI,aI,aI-pI,pU,aU,aU-pU]),{fill:'FF3E6491',white:true,bold:true});
+  sub.forEach(s=>styleRow(ws.addRow(['','   └ '+s.ven,s.pIDR||0,s.aIDR||0,(s.aIDR||0)-(s.pIDR||0),s.pUSD||0,s.aUSD||0,(s.aUSD||0)-(s.pUSD||0)]),{}));});
+ styleRow(ws.addRow([tr('합계','Total'),'',TpI,TaI,TaI-TpI,TpU,TaU,TaU-TpU]),{fill:'FF1F3A5F',white:true,bold:true});
+ ws.views=[{state:'frozen',ySplit:2}];}
+async function downloadExcel(){
+ if(typeof ExcelJS==='undefined'){alert(tr('엑셀 라이브러리 로딩 중입니다. 잠시 후 다시 시도해 주세요.','Excel library loading, please retry shortly.'));return;}
+ const wb=new ExcelJS.Workbook();wb.creator='SHI';
+ buildSheet(wb.addWorksheet(tr('수입세부 차이내역','Receipt Detail Variance')),CD.det_receipt);
+ buildSheet(wb.addWorksheet(tr('지출세부 차이내역','Payment Detail Variance')),CD.det_payment);
+ const buf=await wb.xlsx.writeBuffer();const blob=new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='SHI_Weekly_Cash_Detail_'+CD.period.replace(/[^0-9]/g,'').slice(0,8)+'.xlsx';
+ document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+render();
+</script>
+</body>
+</html>

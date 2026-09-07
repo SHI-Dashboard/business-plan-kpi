@@ -37,7 +37,10 @@ header{background:linear-gradient(115deg,#161B29,#1E2740 55%,#241C4D);color:#fff
 .chip{font-size:11px;font-weight:600;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:#D4DAEA;border:1px solid rgba(255,255,255,.09)}
 .chip b{color:#fff}
 .tabs{display:flex;gap:4px;margin-top:16px}
-.tab{appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:13.5px;color:#AEB6CC;background:transparent;padding:13px 22px 14px;border-radius:12px 12px 0 0;position:relative;transition:color .15s,background .15s;display:flex;align-items:center;gap:9px}
+.tab{appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:13.5px;color:#AEB6CC;background:transparent;padding:11px 20px 12px;border-radius:12px 12px 0 0;position:relative;transition:color .15s,background .15s;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.tab-main{display:flex;align-items:center;gap:9px}
+.tab-sub{font-family:var(--mono);font-size:9.5px;font-weight:700;color:#7E88A3;letter-spacing:.02em;padding-left:17px}
+.tab[aria-selected="true"] .tab-sub{color:var(--muted)}
 .tab .rng{font-size:10.5px;font-weight:600;color:#7C88A6;font-family:var(--mono)}
 .tab:hover{color:#E7EBF5}
 .tab[aria-selected="true"]{background:var(--bg);color:var(--ink)}
@@ -45,13 +48,17 @@ header{background:linear-gradient(115deg,#161B29,#1E2740 55%,#241C4D);color:#fff
 .tab[aria-selected="true"]::after{content:"";position:absolute;left:16px;right:16px;top:8px;height:3px;border-radius:3px}
 .tab.bp[aria-selected="true"]::after{background:var(--bp)} .tab.kp[aria-selected="true"]::after{background:var(--kp)} .tab.pd[aria-selected="true"]::after{background:#8A6BF2} .tab.cs[aria-selected="true"]::after{background:#2A9D8F}
 .tab .dot{width:9px;height:9px;border-radius:3px}
-.tab.bp .dot{background:var(--bp)} .tab.kp .dot{background:var(--kp)} .tab.pd .dot{background:#8A6BF2} .tab.cs .dot{background:#2A9D8F}
+.tab.bp .dot{background:var(--bp)} .tab.kp .dot{background:var(--kp)} .tab.pd .dot{background:#8A6BF2} .tab.cs .dot{background:#2A9D8F} .tab.pu .dot{background:#2E8B57}
+.tab.pu[aria-selected="true"]::after{background:#2E8B57}
 .cashwrap{margin-top:22px;background:var(--surface);border:1px solid var(--line);border-top:3px solid #2A9D8F;border-radius:14px;box-shadow:var(--shadow);padding:14px 16px}
+.cashwrap.pu{border-top-color:#2E8B57}
 .cashwrap .ph{display:flex;align-items:baseline;gap:10px;margin-bottom:2px;flex-wrap:wrap}
 .cashwrap .ph .bar3{width:4px;height:16px;border-radius:2px;background:#2A9D8F;align-self:center}
+.cashwrap.pu .ph .bar3{background:#2E8B57}
 .cashwrap .ph h3{font-size:15px;font-weight:800;color:var(--ink)}
 .cashwrap .ph .d{font-size:11px;color:var(--muted);font-weight:500}
 .cashwrap .updtag{color:#1c6b5b;background:#E3F3EF}
+.cashwrap.pu .updtag{color:#1c6b41;background:#E2F3EA}
 .cashframe{width:100%;border:0;border-radius:10px;background:#eef1f6;display:block;min-height:1400px}
 .langtog{display:flex;gap:2px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:2px;align-self:center}
 .langtog button{appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:11px;color:#AEB6CC;background:transparent;padding:5px 11px;border-radius:7px;letter-spacing:.02em;transition:background .15s,color .15s}
@@ -189,9 +196,12 @@ table.pdt td.pp{color:var(--accent)}
 table.pdt .shb{background:var(--accent-soft);color:var(--accent-deep);font-family:inherit;font-weight:800;font-size:11px;padding:2px 8px;border-radius:6px}
 table.pdt tr.gp td{border-top:1px solid #D6DCEA}
 table.pdt td.seg{color:var(--muted);font-size:11px;font-weight:600}
-.pdstocktab th,.pdstocktab td{text-align:left;white-space:nowrap}
-.pdstocktab td.qty,.pdstocktab th.qcol{text-align:right;font-family:var(--mono);font-weight:800;color:var(--accent-deep)}
-.pdstocktab td.mut{color:var(--muted);font-weight:600;font-family:inherit;font-size:11.5px;white-space:normal}
+table.pdt.pdstocktab{width:auto;min-width:0}
+table.pdt.pdstocktab th,table.pdt.pdstocktab td{text-align:left;white-space:nowrap;padding:8px 26px 8px 0}
+table.pdt.pdstocktab th:last-child,table.pdt.pdstocktab td:last-child{padding-right:0}
+.pdstocktab th{color:var(--muted)}
+.pdstocktab td.qty,.pdstocktab th.qcol{font-family:var(--mono);font-weight:800;color:var(--accent-deep)}
+.pdstocktab td.mut{color:var(--muted);font-weight:600;font-family:inherit;font-size:12px}
 .pdyeargrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .pdyeargrid .yb{background:linear-gradient(160deg,var(--accent-soft),#fff 88%);border:1px solid var(--line);border-radius:11px;padding:12px 15px}
 .pdyeargrid .yh{font-size:14px;font-weight:800;color:var(--accent-deep);font-family:var(--mono);margin-bottom:8px}
@@ -210,8 +220,7 @@ table.pdt.drill{font-size:11.5px;min-width:820px}
 .pdm .extlab{font-size:10.5px;font-weight:700;font-family:var(--mono)}
 .pdt tr.sub td{color:var(--muted);font-size:11.5px}
 .pdt td.nm2{padding-left:22px;color:var(--muted);font-weight:600;text-align:left}
-.pdt .pct{display:block;color:var(--faint);font-size:10px;font-weight:600;font-family:var(--mono);margin-top:2px;text-align:right}
-.pdt td.nm .pct,.pdt td.nm2 .pct,.pdt td.seg .pct{text-align:left}
+.pdt .pct{display:inline;color:var(--faint);font-size:10.5px;font-weight:600;font-family:var(--mono);margin-left:6px}
 .pdt td.pp .pct{color:var(--accent)}
 .pdt.drill{border-collapse:separate;border-spacing:0;min-width:1060px}
 .pdt.drill th,.pdt.drill td{border-bottom:1px solid var(--line)}
@@ -228,7 +237,8 @@ table.pdt.drill{font-size:11.5px;min-width:820px}
 .pdt.drill td.segx{color:var(--accent-deep);font-weight:800}
 .pdt.drill td.segt{color:#4a6b93}
 .pdt.drill td.segp{color:var(--accent)}
-.pdt.drill td .pct{color:var(--faint)}
+.pdt.drill td .pct{display:block;margin-left:0;margin-top:2px;text-align:right;color:var(--faint)}
+.pdt.drill td.pp .pct{color:var(--accent)}
 .scmwrap{display:flex;flex-wrap:wrap;gap:3px;justify-content:flex-end;max-width:60%}
 .scm{appearance:none;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;font-family:inherit;font-weight:700;font-size:10.5px;padding:3px 8px;border-radius:7px;transition:background .12s,color .12s}
 .scm:hover{border-color:var(--accent)}
@@ -309,17 +319,33 @@ footer{font-size:13px!important}
 #pane-bp .mth,#pane-kp .mth{font-size:13.5px!important}
 #pane-bp .vlab,#pane-kp .vlab{font-size:12.5px!important}
 #pane-bp .achlab,#pane-kp .achlab{font-size:14px!important}
-/* 보세물류센터: 텍스트만 확대 (제목·라벨·설명·범례) */
-#pane-pd .pdplb .ph h3{font-size:17.5px!important}
-#pane-pd .pdplb .ph .d{font-size:13.5px!important}
+/* 보세물류센터: 다른 탭과 비슷한 크기로 통일 (제목·라벨·표·차트 일관) */
+#pane-pd .pdplb .ph h3,#pane-pd .pdplb2 .ph h3{font-size:17px!important}
+#pane-pd .pdplb .ph .d,#pane-pd .pdplb2 .ph .d{font-size:13px!important}
+#pane-pd .updtag{font-size:12px!important}
 #pane-pd .pdstep .l{font-size:13px!important}
-#pane-pd .pdstep .s{font-size:12px!important}
-#pane-pd .arrow{font-size:17.5px!important}
+#pane-pd .pdstep .v{font-size:19px!important}
+#pane-pd .pdstep .s{font-size:11.5px!important}
+#pane-pd .arrow{font-size:17px!important}
 #pane-pd .pdchart-t{font-size:13.5px!important}
-#pane-pd .pdchart-t span{font-size:12.5px!important}
+#pane-pd .pdchart-t span{font-size:12px!important}
 #pane-pd .pdnote{font-size:13px!important}
-/* 보세물류센터 숫자 = 원본 크기 유지 (플로우 값). 차트 축/값/월 라벨은 위에서 미확대 → 원본 */
-#pane-pd .pdstep .v{font-size:17px!important}
+#pane-pd .pdnote-edit .nlab{font-size:13px!important}
+/* PDPLB 표 = 타 탭 표와 유사 */
+#pane-pd table.pdt{font-size:13px!important}
+#pane-pd table.pdt th{font-size:12px!important}
+#pane-pd table.pdt.drill{font-size:12.5px!important}
+#pane-pd .pdt .pct{font-size:11px!important}
+#pane-pd .pdyeargrid .yh{font-size:14px!important}
+#pane-pd .pdyeargrid li{font-size:13px!important}
+#pane-pd .drillbtn{font-size:14px!important}
+/* PDPLB 차트 텍스트 = bp/kp와 동일 크기 */
+#pane-pd .axl{font-size:12px!important}
+#pane-pd .mth{font-size:13px!important}
+#pane-pd .vlab{font-size:12.5px!important}
+#pane-pd .seglab{font-size:12px!important}
+#pane-pd .seglab2,#pane-pd .extlab{font-size:11.5px!important}
+#pane-pd .leg{font-size:13px!important}
 </style>
 </head>
 <body>
@@ -339,10 +365,11 @@ footer{font-size:13px!important}
       <span class="chip" id="updated" style="background:rgba(94,53,237,.22);border-color:rgba(138,107,242,.4)"></span>
     </div>
     <div class="tabs" role="tablist">
-      <button class="tab bp" role="tab" aria-selected="true" data-tab="bp"><span class="dot"></span><span data-i18n="tab_bp">사업계획</span> <span class="rng">26.01–26.12</span></button>
-      <button class="tab kp" role="tab" aria-selected="false" data-tab="kp"><span class="dot"></span><span data-i18n="tab_kp">KPI</span> <span class="rng">25.11–26.10</span></button>
-      <button class="tab pd" role="tab" aria-selected="false" data-tab="pd"><span class="dot"></span><span data-i18n="tab_pd">보세물류센터</span> <span class="rng">PDPLB</span></button>
-      <button class="tab cs" role="tab" aria-selected="false" data-tab="cs"><span class="dot"></span><span data-i18n="tab_cs">자금보고서</span> <span class="rng">Weekly</span></button>
+      <button class="tab bp" role="tab" aria-selected="true" data-tab="bp"><span class="tab-main"><span class="dot"></span><span data-i18n="tab_bp">사업계획</span> <span class="rng">26.01–26.12</span></span><span class="tab-sub">(Monthly Update)</span></button>
+      <button class="tab kp" role="tab" aria-selected="false" data-tab="kp"><span class="tab-main"><span class="dot"></span><span data-i18n="tab_kp">KPI</span> <span class="rng">25.11–26.10</span></span><span class="tab-sub">(Monthly Update)</span></button>
+      <button class="tab pd" role="tab" aria-selected="false" data-tab="pd"><span class="tab-main"><span class="dot"></span><span data-i18n="tab_pd">보세물류센터</span> <span class="rng">PDPLB</span></span><span class="tab-sub">(Monthly Update)</span></button>
+      <button class="tab cs" role="tab" aria-selected="false" data-tab="cs"><span class="tab-main"><span class="dot"></span><span data-i18n="tab_cs">자금보고서</span> <span class="rng">Weekly</span></span><span class="tab-sub">(Weekly Update)</span></button>
+      <button class="tab pu" role="tab" aria-selected="false" data-tab="pu"><span class="tab-main"><span class="dot"></span><span data-i18n="tab_pu">매입현황</span> <span class="rng">26.01–08</span></span><span class="tab-sub">(Monthly Update)</span></button>
     </div>
   </div>
 </header>
@@ -354,7 +381,6 @@ footer{font-size:13px!important}
     <section class="pdplb-sec">
       <div class="pdplb">
         <div class="ph"><span class="bar3"></span><h3 data-i18n="pd_title">보세물류센터 (PDPLB)</h3><span class="d" data-i18n="pd_d">전체 누계 [25년 합계(12월) + 26.01–26.12] · 사업계획/KPI와 별도 관리</span></div>
-        <div class="updline"><span class="updtag">(Monthly Update)</span></div>
         <div class="pdstack">
           <div>
             <div class="pdchart-t" data-i18n-html="pd_flow_t">손익 흐름 <span style="color:#828BAD;font-weight:600;font-size:10px">· USD 누계</span></div>
@@ -379,8 +405,13 @@ footer{font-size:13px!important}
   <div class="tabpane cs" id="pane-cash" role="tabpanel" hidden>
     <div class="cashwrap">
       <div class="ph"><span class="bar3"></span><h3 data-i18n="cs_title">주간 자금현황 보고서</h3><span class="d" data-i18n="cs_d">SHI Weekly Cash Position · 매주 갱신</span></div>
-      <div class="updline"><span class="updtag">(Weekly Update)</span></div>
       <iframe id="cashFrame" class="cashframe" src="./cash.html" title="SHI Weekly Cash Position Report" loading="lazy"></iframe>
+    </div>
+  </div>
+  <div class="tabpane pu" id="pane-purchase" role="tabpanel" hidden>
+    <div class="cashwrap pu">
+      <div class="ph"><span class="bar3"></span><h3 data-i18n="pu_title">매입현황 대시보드</h3><span class="d" data-i18n="pu_d">SHI Purchase Analysis · 2026.01–08 (월별 공급사별)</span></div>
+      <iframe id="purFrame" class="cashframe" src="./purchase.html" title="SHI Purchase Dashboard" loading="lazy"></iframe>
     </div>
   </div>
 
@@ -399,8 +430,8 @@ let BP_M=['26.01','26.02','26.03','26.04','26.05','26.06','26.07','26.08','26.09
 let KP_M=['25.11','25.12','26.01','26.02','26.03','26.04','26.05','26.06','26.07','26.08','26.09','26.10'];
 let LANG=(()=>{try{return localStorage.getItem('shi_lang')||'ko'}catch(e){return 'ko'}})();
 const T={"ko":{"brand_sub": "경영관리 · 사업계획 / KPI 실적 모니터링", "title": "2026 실적 대시보드", "chip_asof": "기준월 <b>2026년 8월</b>", "chip_unit": "단위 <b>USD</b>", "chip_desc": "월별 계획 대비 실적 · 누계 달성", "data_asof": "데이터 기준 ·", "tab_bp": "사업계획", "tab_kp": "KPI", "tab_pd": "보세물류센터", "sc_title": "종합 스코어카드 · 연간 계획 대비 실적", "sc_cap_bp": "사업계획 회계연도 26.01–26.12", "sc_cap_kp": "KPI 회계연도 25.11–26.10", "sc_cap_asof": "· 실적 기준월 2026.08", "th_metric": "지표", "th_plan": "연간 계획", "th_act": "누계 실적", "th_diff": "차이", "th_ach": "달성율", "grp_total": "전사 종합", "grp_total_d": "회사 전체 · 총매출 / 영업이익 / 영업이익율", "grp_seg": "부문별 매출", "grp_seg_d": "MRO · 기계장비 · 구매표준화 부문별 실적", "m_tot": "총매출", "m_op": "영업이익", "m_opm": "영업이익율", "m_rel": "관계사 MRO", "m_nonrel": "비관계사 MRO", "m_mach": "기계장비 (비관계사)", "m_std": "구매표준화", "improved": "개선", "declined": "악화", "sc_note": "※ 상단 스코어카드 = <b>회계연도 총 계획 대비 현재 누계실적</b>(연간 진행률). 아래 지표별 대시보드 = <b>해당월(8월)까지 누계 계획 대비 실적</b>. 달성율 = 누계실적 ÷ 연간계획.", "cum_prefix": "누계", "monthly_pa": "월별 계획 대비 실적", "bar_pct": "막대 위 % = 달성율", "plan": "계획", "actual": "실적", "st_met": "달성", "st_near": "근접", "st_below": "미달", "cum_plan": "누계 계획", "cum_actual": "누계 실적", "vs_plan": "계획 대비", "assessment": "평가", "above_plan": "계획 상회", "below_plan": "계획 미달", "cum_ach": "누계 달성율", "difference": "차이", "cumhead": "누계 · 해당월(8월)까지 계획 대비 실적", "notes": "특이사항 · 코멘트", "note_ph": "이 지표의 특이사항·코멘트를 입력하세요 (자동 저장)", "saved": "✓ 저장됨", "pd_title": "보세물류센터 (PDPLB)", "pd_d": "전체 누계 [25년 합계(12월) + 26.01–26.12] · 사업계획/KPI와 별도 관리", "pd_flow_t": "손익 흐름 <span style=\"color:#828BAD;font-weight:600;font-size:10px\">· USD 누계</span>", "pd_chart_t": "월별 매출 · 영업이익 <span style=\"color:#828BAD;font-weight:600;font-size:10px\">· USD K</span>", "pd_notes": "특이사항", "pd_note_ph": "PDPLB 관련 특이사항·코멘트를 입력하세요 (예: 세관 인벤토리 이슈, 신규 보세 품목 등)", "pd_sales": "매출", "pd_cogs": "원가", "pd_sga": "판관비", "pd_op": "영업이익", "pd_opm": "영업이익율", "pd_loss": "손실 구간", "pd_note_a": "매출 ", "pd_note_b": " 대비 원가·판관비 합계 ", "pd_note_c": " 영업손실", "pd_note_d": " · 운영 초기 판관비 선투입 영향", "foot1": "<b>산출 기준</b> · 달성율 = 실적 ÷ 계획. 영업이익율은 실적−계획 %p 차이. 상태 : 달성 ≥100% · 근접 90–100% · 미달 &lt;90%. 막대 위 값 = 계획(연한색)·실적(진한색), 상단 % = 월별 달성율.", "foot2": "<b>계획 출처</b> · 연간 계획 = 기초자료(2025·2026 P&L Business Plan). 사업계획=2026년 12개월, KPI=2025년 11·12월+2026년 1~10월. 실적 = 16,350 환율 적용(8월까지).", "foot3": "<b>특이사항 메모</b> · 각 누계 보드에 입력한 내용은 사용 중인 브라우저·기기에 저장됩니다(다른 기기와는 공유되지 않음). <b>기계장비</b>는 6월 대형 계획 집중으로 누계 달성율이 낮게 표시(시점 편차)."},"en":{"brand_sub": "Management · Business Plan / KPI Monitoring", "title": "2026 Performance Dashboard", "chip_asof": "As of <b>Aug 2026</b>", "chip_unit": "Unit <b>USD</b>", "chip_desc": "Monthly plan vs actual · Cumulative", "data_asof": "Data as of ·", "tab_bp": "Business Plan", "tab_kp": "KPI", "tab_pd": "Bonded Warehouse", "sc_title": "Overall Scorecard · Annual Plan vs Actual", "sc_cap_bp": "Business Plan FY 26.01–26.12", "sc_cap_kp": "KPI FY 25.11–26.10", "sc_cap_asof": "· As of 2026.08", "th_metric": "Metric", "th_plan": "Annual Plan", "th_act": "Cumulative Actual", "th_diff": "Difference", "th_ach": "Achievement", "grp_total": "Company Total", "grp_total_d": "Company-wide · Total Sales / Operating Profit / Operating Margin", "grp_seg": "Sales by Segment", "grp_seg_d": "MRO · Machinery · Purchasing Standardization by segment", "m_tot": "Total Sales", "m_op": "Operating Profit", "m_opm": "Operating Margin", "m_rel": "Affiliate MRO", "m_nonrel": "Non-Affiliate MRO", "m_mach": "Machinery (Non-Affiliate)", "m_std": "Purchasing Standardization", "improved": "Improved", "declined": "Declined", "sc_note": "※ Top scorecard = <b>cumulative actual vs total annual plan</b> (annual progress). Metric dashboards below = <b>cumulative plan vs actual through Aug</b>. Achievement = cumulative actual ÷ annual plan.", "cum_prefix": "Cum.", "monthly_pa": "Monthly plan vs actual", "bar_pct": "% above bar = achievement", "plan": "Plan", "actual": "Actual", "st_met": "Met", "st_near": "Near", "st_below": "Below", "cum_plan": "Cumulative Plan", "cum_actual": "Cumulative Actual", "vs_plan": "vs Plan", "assessment": "Assessment", "above_plan": "Above Plan", "below_plan": "Below Plan", "cum_ach": "Cum. Achievement", "difference": "Difference", "cumhead": "Cumulative · Plan vs Actual (through Aug)", "notes": "Notes · Comments", "note_ph": "Enter notes for this metric (auto-saved)", "saved": "✓ Saved", "pd_title": "Bonded Warehouse (PDPLB)", "pd_d": "Total cumulative [FY25 total (Dec) + 26.01–26.12] · Managed separately from Business Plan/KPI", "pd_flow_t": "P&L Flow <span style=\"color:#828BAD;font-weight:600;font-size:10px\">· USD cumulative</span>", "pd_chart_t": "Monthly Sales · Operating Profit <span style=\"color:#828BAD;font-weight:600;font-size:10px\">· USD K</span>", "pd_notes": "Notes", "pd_note_ph": "Enter PDPLB notes (e.g., customs inventory issues, new bonded items)", "pd_sales": "Sales", "pd_cogs": "COGS", "pd_sga": "SG&A", "pd_op": "Operating Profit", "pd_opm": "Operating Margin", "pd_loss": "Loss", "pd_note_a": "Sales ", "pd_note_b": " vs COGS+SG&A ", "pd_note_c": " operating loss", "pd_note_d": " · early-stage SG&A front-loading", "foot1": "<b>Basis</b> · Achievement = actual ÷ plan. Operating margin shows actual−plan %p gap. Status: Met ≥100% · Near 90–100% · Below &lt;90%. Bar values = plan (light) · actual (dark), top % = monthly achievement.", "foot2": "<b>Plan source</b> · Annual plan = base data (2025·2026 P&L Business Plan). Business Plan = 12 months of 2026, KPI = Nov·Dec 2025 + Jan–Oct 2026. Actual = rate 16,350 applied (through August).", "foot3": "<b>Notes</b> · Text entered on each cumulative board is stored on the current browser/device (not shared across devices). <b>Machinery</b> shows a low cumulative achievement due to a large plan concentrated in June (timing variance)."}};
-Object.assign(T.ko,{note_h1:'상반기 특이사항 · 코멘트',note_h2:'하반기 특이사항 · 코멘트',share_title:'비관계사 매출 점유율',share_d:'해당월(8월) 누계실적 기준 · 원형 내 %',share1_t:'상품 총매출 기준 (구매표준화 제외)',share1_sub:'(비관계사MRO + 기계외부) ÷ (관계사MRO + 비관계사MRO + 기계외부)',share2_t:'MRO 매출 기준 (기계 제외)',share2_sub:'비관계사MRO ÷ (관계사MRO + 비관계사MRO)',share_donut:'비관계사 비중',share_note_label:'비관계사 비중 트렌드 코멘트',share_note_ph:'24·25년 비관계사 MRO 비중 대비 26년 트렌드를 입력하세요 (자동 저장)',st_met:'달성',st_near:'근접',st_below:'미달',cat_mach:'기계(외부)',pdcat_title:'카테고리별 월별 매출 트렌드',pdcat_d:'PDPLB SUMMARY · 2026 월별(USD)',pdsplit_title:'TLDDP vs PDPLB 구분손익',pdsplit_d:'2026 누계 실적 기준 (TOTAL=회사 전체) · USD',gp_item:'항목',gp_sales:'매출액',gp_cogs:'매출원가',gp_gross:'매출총이익',gp_sga:'판관비',gp_op:'영업이익',gp_opm:'영업이익율',gp_share:'PDPLB 비중',gp_seg:'구분',gp_cum:'2026 누계',pdyear_title:'연도별 주요 특이사항',pdyear_d:'2025·2026 PL Remark 기준',drill_title:'월별 세부 구분손익 전체보기 (드릴다운)',gp_sgar:'판관비율',sc_year:'연간',th_plan_cum:'누계 계획',sc_cumcap:'까지 누계 · 계획 대비 실적',pl_title:'손익계산서 세부 (엑셀 항목)',pl_d:'최하위 드릴다운 · 26년 실적 월별 (USD, 16,350)',pl_btn:'손익계산서 전체 항목 펼치기 (월별)',pl_item:'항목',trend_title:'장기 추이 (2011~2026)',trend_d:'설립~현재 매출·영업이익 (USD, 2026=8월 누계)',trend_year:'연도',tab_cs:'자금보고서',cs_title:'주간 자금현황 보고서',cs_d:'SHI Weekly Cash Position · 매주 갱신',pdstock_title:'PDPLB 월말 재고 현황',pdstock_d:'보세물류센터(PDPLB) 창고 재고 · 당월말 기준',ps_item:'품목',ps_desc:'품명',ps_cust:'주요 판매처',ps_unit:'단위',ps_qty:'당월말 재고수량',ps_sup:'매입처',ps_ctry:'수입국가'});
-Object.assign(T.en,{note_h1:'H1 Notes · Comments',note_h2:'H2 Notes · Comments',share_title:'Non-Affiliate Sales Share',share_d:'Based on cumulative actual (through Aug) · % inside ring',share1_t:'Total Goods Sales basis (excl. Purchasing Std.)',share1_sub:'(Non-Aff. MRO + Machinery) ÷ (Aff. + Non-Aff. MRO + Machinery)',share2_t:'MRO Sales basis (excl. Machinery)',share2_sub:'Non-Aff. MRO ÷ (Aff. + Non-Aff. MRO)',share_donut:'Non-aff. share',share_note_label:'Non-Affiliate Share Trend Notes',share_note_ph:'Enter 2026 trend vs 2024/25 non-affiliate MRO share (auto-saved)',st_met:'Met',st_near:'Near',st_below:'Below',cat_mach:'Machinery (ext.)',pdcat_title:'Monthly Sales Trend by Category',pdcat_d:'PDPLB SUMMARY · 2026 monthly (USD)',pdsplit_title:'TLDDP vs PDPLB Segment P&L',pdsplit_d:'Based on 2026 cumulative (TOTAL=whole company) · USD',gp_item:'Item',gp_sales:'Sales',gp_cogs:'COGS',gp_gross:'Gross Profit',gp_sga:'SG&A',gp_op:'Operating Profit',gp_opm:'Operating Margin',gp_share:'PDPLB share',gp_seg:'Segment',gp_cum:'2026 Cum.',pdyear_title:'Key Notes by Year',pdyear_d:'Based on 2025·2026 PL remarks',drill_title:'Full monthly segment P&L (drill-down)',gp_sgar:'SG&A ratio',sc_year:'Annual',th_plan_cum:'Cumulative Plan',sc_cumcap:'cumulative · plan vs actual',pl_title:'Income Statement Detail (Excel items)',pl_d:'Lowest-level drill-down · 2026 monthly actual (USD, 16,350)',pl_btn:'Expand full income statement (monthly)',pl_item:'Item',trend_title:'Long-term Trend (2011~2026)',trend_d:'Since founding · Sales & Operating Profit (USD, 2026=YTD Aug)',trend_year:'Year',tab_cs:'Cash Report',cs_title:'Weekly Cash Position Report',cs_d:'SHI Weekly Cash Position · updated weekly',pdstock_title:'PDPLB Month-end Inventory',pdstock_d:'Bonded warehouse (PDPLB) stock · as of month-end',ps_item:'Item',ps_desc:'Description',ps_cust:'Main Customer',ps_unit:'Unit',ps_qty:'Month-end Stock Qty',ps_sup:'Supplier',ps_ctry:'Country'});
+Object.assign(T.ko,{note_h1:'상반기 특이사항 · 코멘트',note_h2:'하반기 특이사항 · 코멘트',share_title:'비관계사 매출 점유율',share_d:'해당월(8월) 누계실적 기준 · 원형 내 %',share1_t:'상품 총매출 기준 (구매표준화 제외)',share1_sub:'(비관계사MRO + 기계외부) ÷ (관계사MRO + 비관계사MRO + 기계외부)',share2_t:'MRO 매출 기준 (기계 제외)',share2_sub:'비관계사MRO ÷ (관계사MRO + 비관계사MRO)',share_donut:'비관계사 비중',share_note_label:'비관계사 비중 트렌드 코멘트',share_note_ph:'24·25년 비관계사 MRO 비중 대비 26년 트렌드를 입력하세요 (자동 저장)',st_met:'달성',st_near:'근접',st_below:'미달',cat_mach:'기계(외부)',pdcat_title:'카테고리별 월별 매출 트렌드',pdcat_d:'PDPLB SUMMARY · 2026 월별(USD)',pdsplit_title:'TLDDP vs PDPLB 구분손익',pdsplit_d:'2026 누계 실적 기준 (TOTAL=회사 전체) · USD',gp_item:'항목',gp_sales:'매출액',gp_cogs:'매출원가',gp_gross:'매출총이익',gp_sga:'판관비',gp_op:'영업이익',gp_opm:'영업이익율',gp_share:'PDPLB 비중',gp_seg:'구분',gp_cum:'2026 누계',pdyear_title:'연도별 주요 특이사항',pdyear_d:'2025·2026 PL Remark 기준',drill_title:'월별 세부 구분손익 전체보기 (드릴다운)',gp_sgar:'판관비율',sc_year:'연간',th_plan_cum:'누계 계획',sc_cumcap:'까지 누계 · 계획 대비 실적',pl_title:'손익계산서 세부 (엑셀 항목)',pl_d:'최하위 드릴다운 · 26년 실적 월별 (USD, 16,350)',pl_btn:'손익계산서 전체 항목 펼치기 (월별)',pl_item:'항목',trend_title:'장기 추이 (2011~2026)',trend_d:'설립~현재 매출·영업이익 (USD, 2026=8월 누계)',trend_year:'연도',tab_cs:'자금보고서',cs_title:'주간 자금현황 보고서',cs_d:'SHI Weekly Cash Position · 매주 갱신',tab_pu:'매입현황',pu_title:'매입현황 대시보드',pu_d:'SHI Purchase Analysis · 2026.01–08 (월별 공급사별)',pdstock_title:'PDPLB 월말 재고 현황',pdstock_d:'보세물류센터(PDPLB) 창고 재고 · 당월말 기준',ps_item:'품목',ps_desc:'품명',ps_cust:'주요 판매처',ps_unit:'단위',ps_qty:'당월말 재고수량',ps_sup:'매입처',ps_ctry:'수입국가'});
+Object.assign(T.en,{note_h1:'H1 Notes · Comments',note_h2:'H2 Notes · Comments',share_title:'Non-Affiliate Sales Share',share_d:'Based on cumulative actual (through Aug) · % inside ring',share1_t:'Total Goods Sales basis (excl. Purchasing Std.)',share1_sub:'(Non-Aff. MRO + Machinery) ÷ (Aff. + Non-Aff. MRO + Machinery)',share2_t:'MRO Sales basis (excl. Machinery)',share2_sub:'Non-Aff. MRO ÷ (Aff. + Non-Aff. MRO)',share_donut:'Non-aff. share',share_note_label:'Non-Affiliate Share Trend Notes',share_note_ph:'Enter 2026 trend vs 2024/25 non-affiliate MRO share (auto-saved)',st_met:'Met',st_near:'Near',st_below:'Below',cat_mach:'Machinery (ext.)',pdcat_title:'Monthly Sales Trend by Category',pdcat_d:'PDPLB SUMMARY · 2026 monthly (USD)',pdsplit_title:'TLDDP vs PDPLB Segment P&L',pdsplit_d:'Based on 2026 cumulative (TOTAL=whole company) · USD',gp_item:'Item',gp_sales:'Sales',gp_cogs:'COGS',gp_gross:'Gross Profit',gp_sga:'SG&A',gp_op:'Operating Profit',gp_opm:'Operating Margin',gp_share:'PDPLB share',gp_seg:'Segment',gp_cum:'2026 Cum.',pdyear_title:'Key Notes by Year',pdyear_d:'Based on 2025·2026 PL remarks',drill_title:'Full monthly segment P&L (drill-down)',gp_sgar:'SG&A ratio',sc_year:'Annual',th_plan_cum:'Cumulative Plan',sc_cumcap:'cumulative · plan vs actual',pl_title:'Income Statement Detail (Excel items)',pl_d:'Lowest-level drill-down · 2026 monthly actual (USD, 16,350)',pl_btn:'Expand full income statement (monthly)',pl_item:'Item',trend_title:'Long-term Trend (2011~2026)',trend_d:'Since founding · Sales & Operating Profit (USD, 2026=YTD Aug)',trend_year:'Year',tab_cs:'Cash Report',cs_title:'Weekly Cash Position Report',cs_d:'SHI Weekly Cash Position · updated weekly',tab_pu:'Purchase',pu_title:'Purchase Dashboard',pu_d:'SHI Purchase Analysis · 2026.01–08 (monthly by supplier)',pdstock_title:'PDPLB Month-end Inventory',pdstock_d:'Bonded warehouse (PDPLB) stock · as of month-end',ps_item:'Item',ps_desc:'Description',ps_cust:'Main Customer',ps_unit:'Unit',ps_qty:'Month-end Stock Qty',ps_sup:'Supplier',ps_ctry:'Country'});
 const t=k=>{const o=T[LANG]||T.ko;return (o&&o[k]!=null)?o[k]:(T.ko[k]!=null?T.ko[k]:k)};
 function applyStaticI18n(){
   document.documentElement.lang=LANG;
@@ -558,7 +589,7 @@ function buildScorecard(basis){
   return `<div class="score">
     <div class="score-h"><span class="t"><span class="bar3"></span>${t('sc_title')}</span>
       <div class="scmwrap">${tabs}</div></div>
-    <div class="score-cap"><span class="cap">${cap}</span> <span class="updtag">(Monthly Update)</span></div>
+    <div class="score-cap"><span class="cap">${cap}</span></div>
     <table class="sc"><thead><tr><th>${t('th_metric')}</th><th>${planLbl}</th><th>${t('th_act')}</th><th>${t('th_diff')}</th><th>${t('th_ach')}</th></tr></thead>
       <tbody>${rows.join('')}</tbody></table>
     <div class="sc-note" style="color:var(--accent-deep);background:var(--accent-soft)">${t('sc_note')}</div>
@@ -738,7 +769,7 @@ function buildPdStock(){
 function buildPdSplit(){
   const box=$('#pdSplit'); if(!box)return;
   const sp=RAW.pdplb.split, ci=RAW.pdplb.split_cols.indexOf('cum');
-  function amt(d,seg,cls){const p=d.X?d[seg]/d.X*100:0;return '<td class="'+(cls||'')+'">'+fUSD(d[seg])+' <span class="pct">'+p.toFixed(1)+'%</span></td>';}
+  function amt(d,seg,cls){const p=d.X?d[seg]/d.X*100:0;return '<td class="'+(cls||'')+'">'+fUSD(d[seg])+' <span class="pct">('+p.toFixed(1)+'%)</span></td>';}
   const lines=[['sales',t('gp_sales')],['cogs',t('gp_cogs')],['gross',t('gp_gross')],['sga',t('gp_sga')],['op',t('gp_op')]];
   let rows='';
   lines.forEach(([k,nm])=>{const d=sp[k][ci];
@@ -789,16 +820,17 @@ function initPDPLB(){
   flow.appendChild(el('div','arrow','→'));
   flow.appendChild(el('div','pdstep neg',`<div class="l">${t('pd_opm')}</div><div class="v">${(p.opm*100).toFixed(1)}%</div><div class="s bad">${t('pd_loss')}</div>`));
   $('#pdNote').innerHTML=`${t('pd_note_a')}<b>${fUSD(p.sales)}</b>${t('pd_note_b')}<b>${fUSD(p.cogs+p.sga)}</b> → <b style="color:#C63A2C">${fUSD(Math.abs(p.op))}${t('pd_note_c')}</b>${t('pd_note_d')}`;
-  const ms=p.m_sales,mo=p.m_op,last=trim(ms,mo),n=last+1;
+  const ms=p.m_sales,mo=p.m_op;
+  let last=-1;for(let i=0;i<ms.length;i++){if((ms[i]&&ms[i]!==0)||(mo[i]&&mo[i]!==0))last=i;} if(last<0)last=trim(ms,mo); const n=last+1;
   const mL=RAW.months.bp.slice(0,n),sA=ms.slice(0,n),oA=mo.slice(0,n);
-  const W=Math.max(1000,n*150),H=300,pad={l:56,r:20,t:34,b:44},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b,gw=iw/n;
+  const W=Math.max(720,n*116),H=330,pad={l:60,r:24,t:40,b:48},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b,gw=iw/n;
   const vals=sA.concat(oA).filter(v=>v!=null);let mx=Math.max(0,...vals),mn=Math.min(0,...vals);
   const step=20000;let nmax=Math.ceil(mx/step)*step||step,nmin=mn<0?Math.floor(mn/step)*step:0;const span=(nmax-nmin)||1,y=v=>pad.t+ih-(v-nmin)/span*ih;
   const svg=sv('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart pdm',preserveAspectRatio:'xMinYMid meet'});
   for(let i=0;i<=3;i++){const val=nmin+span*i/3,yy=y(val);
     svg.appendChild(sv('line',{x1:pad.l,x2:W-pad.r,y1:yy,y2:yy,class:Math.abs(val)<1e-9?'zeroln':'gridln'}));
     const t=sv('text',{x:pad.l-6,y:yy+3,class:'axl','text-anchor':'end'});t.textContent=fK(val);svg.appendChild(t)}
-  const bw=Math.min(46,gw*0.30),gap=8,y0=y(0);
+  const bw=Math.min(58,gw*0.36),gap=10,y0=y(0);
   for(let i=0;i<n;i++){const cx=pad.l+gw*i+gw/2,px=cx-bw-gap/2,ax=cx+gap/2;
     [[t('pd_sales'),sA[i],px,'#3E86D6'],[t('pd_op'),oA[i],ax,(oA[i]<0?'#C63A2C':'#6C4BD8')]].forEach(([lb,v,x,c])=>{
       if(v==null)return;const yy=y(v),h=Math.abs(yy-y0);
@@ -825,20 +857,21 @@ function animate(){requestAnimationFrame(()=>requestAnimationFrame(()=>{
   document.querySelectorAll('.tabpane:not([hidden]) .bar, .pdm .bar').forEach(b=>{b.setAttribute('y',b.dataset.y);b.setAttribute('height',b.dataset.h)});
   document.querySelectorAll('.tabpane:not([hidden]) .cmeter .f, .tabpane:not([hidden]) .hf').forEach(f=>f.style.width=f.dataset.w+'%');
 }))}
-const panes={bp:$('#pane-bp'),kp:$('#pane-kp'),pd:$('#pane-pd'),cs:$('#pane-cash')};
-function fitCash(){try{const f=$('#cashFrame');if(f&&f.contentWindow&&f.contentWindow.document&&f.contentWindow.document.body){const h=f.contentWindow.document.body.scrollHeight;if(h>200)f.style.height=(h+24)+'px';}}catch(e){}}
-let cashTimer=null;
-function watchCash(on){ if(cashTimer){clearInterval(cashTimer);cashTimer=null;} if(on){fitCash();cashTimer=setInterval(fitCash,700);} }
+const panes={bp:$('#pane-bp'),kp:$('#pane-kp'),pd:$('#pane-pd'),cs:$('#pane-cash'),pu:$('#pane-purchase')};
+function fitFrame(id){try{const f=$('#'+id);if(f&&f.contentWindow&&f.contentWindow.document&&f.contentWindow.document.body){const h=f.contentWindow.document.body.scrollHeight;if(h>200)f.style.height=(h+24)+'px';}}catch(e){}}
+let frTimer=null,frCur=null;
+function watchFrame(id){ if(frTimer){clearInterval(frTimer);frTimer=null;} frCur=id; if(id){fitFrame(id);frTimer=setInterval(()=>fitFrame(id),700);} }
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   const k=t.dataset.tab;
   document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
   Object.keys(panes).forEach(kk=>{if(panes[kk])panes[kk].hidden=(k!==kk);});
-  watchCash(k==='cs'); animate();
+  watchFrame(k==='cs'?'cashFrame':(k==='pu'?'purFrame':null)); animate();
 }));
-window.addEventListener('load',()=>{const f=$('#cashFrame');if(f)f.addEventListener('load',fitCash);});
+window.addEventListener('load',()=>{['cashFrame','purFrame'].forEach(id=>{const f=$('#'+id);if(f)f.addEventListener('load',()=>{try{if(f.contentWindow&&f.contentWindow.applyExtLang&&LANG!=='ko')f.contentWindow.applyExtLang(LANG);}catch(e){}fitFrame(id);});});});
+function syncFrameLang(){['cashFrame','purFrame'].forEach(id=>{try{const f=$('#'+id);if(f&&f.contentWindow&&f.contentWindow.applyExtLang)f.contentWindow.applyExtLang(LANG);}catch(e){}});}
 document.querySelectorAll('#langtog button').forEach(b=>b.addEventListener('click',()=>{
   LANG=b.dataset.lang; try{localStorage.setItem('shi_lang',LANG)}catch(e){}
-  render();
+  render(); syncFrameLang();
 }));
 document.addEventListener('click',e=>{const b=e.target.closest('.scm');if(!b)return;const pane=b.closest('.tabpane');if(!pane)return;const basis=pane.id.replace('pane-','');SCM[basis]=b.dataset.scm;const sc=pane.querySelector('.score');if(sc)sc.outerHTML=buildScorecard(basis);});
 document.addEventListener('click',e=>{const b=e.target.closest('.drillbtn[data-toggle]');if(!b)return;const w=document.getElementById(b.dataset.toggle);if(!w)return;if(w.hasAttribute('hidden')){w.removeAttribute('hidden');b.querySelector('.ar').textContent='▾';}else{w.setAttribute('hidden','');b.querySelector('.ar').textContent='▸';}});

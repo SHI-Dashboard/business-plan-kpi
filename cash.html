@@ -74,7 +74,7 @@ thead th{background:#f3f6fa;color:var(--navy);font-weight:700;}
         <span data-ko="단위 <b>USD</b> (세부 IDR 병기)" data-en="Unit <b>USD</b> (details in IDR)"></span>
       </div>
     </div>
-    <button class="langbtn" id="langbtn" onclick="toggleLang()">EN</button>
+    <button class="langbtn" id="langbtn" onclick="toggleLang()" style="display:none">EN</button>
   </div>
 </header>
 <main>
@@ -258,6 +258,7 @@ function drawCharts(){
 }
 function render(){i18nStatic();renderDynamic();drawCharts();}
 function toggleLang(){LANG=LANG==='ko'?'en':'ko';render();}
+window.applyExtLang=function(l){LANG=(l==='en')?'en':'ko';render();};
 function tg(id){const w=document.getElementById(id),b=w.previousElementSibling;w.classList.toggle('open');b.textContent=w.classList.contains('open')?tr('▼ 접기','▼ Collapse'):(b.dataset.lbl||b.textContent);}
 // ---- Excel (ExcelJS · Pretendard · blue header · IDR/USD) ----
 function styleRow(row,opt){opt=opt||{};row.eachCell({includeEmpty:true},(cell,col)=>{

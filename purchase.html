@@ -395,7 +395,7 @@ const T={ko:{
  heroLab:'Total purchases (excl. VAT)', allMc:n=>`All months (${n})`,
  heroSub:(g,c,s)=>`Incl. VAT <b style="color:var(--ink2)">${g}</b> · ${c} invoices · ${s} suppliers`,
  kGross:'Total incl. VAT', kVat:v=>`VAT ${v}`,
- kAvgM:'Monthly average', kAvgC:'Average per invoice', kAvgMd:n=>`${n}-month average (Aug partial)`, kAvgCd:c=>`based on ${c} invoices`,
+ kAvgM:'Monthly average', kAvgC:'Average per invoice', kAvgMd:n=>`${n}-month average (2026.01–08)`, kAvgCd:c=>`based on ${c} invoices`,
  kImp:'Import purchases / share', kImpD:p=>`${p} of total`,
  kConc:'Top 10 supplier concentration', kConcD:(n,p)=>`${n} suppliers reach 80% · Top20 ${p}`,
  kUnp:'Unpaid balance (incl. VAT)', kUnpD:(c,p)=>`${c} invoices · ${p} of total`,
@@ -406,14 +406,14 @@ const T={ko:{
  chRank:'Rank', chTot:'Period total', chShare:'Share of total', chCnt:'Invoices', chMon:'Active months',
  chTerm:'Avg terms', chPay:'Avg actual days', chUnp:'Unpaid balance', chAvg:'Monthly average',
  anH:'Anomaly detection (spike / drop vs own average)',
- anNote:n=>`Based on complete months <b>2026.01–08 (8 months)</b> · each month compared with that supplier's <b>average of the other months</b> · ranked by deviation · ${n} findings · <b>click a row to load that supplier into the chart above</b> (August excluded — partial data)`,
+ anNote:n=>`Based on complete months <b>2026.01–08 (8 months)</b> · each month compared with that supplier's <b>average of the other months</b> · ranked by deviation · ${n} findings · <b>click a row to load that supplier into the chart above</b> (based on complete months 2026.01–08)`,
  anNone:'No supplier exceeded the anomaly thresholds.',
  anAll:'All', anTypes:{SPIKE:'Spike',DROP:'Drop',ONEOFF:'One-off / new',STOP:'Stopped',TDN:'Declining'},
  anTh:['Type','Supplier','Month','Month amount (IDR)','Month (USD)','Avg of other months (IDR)','Multiple','Deviation (IDR)','Period total (IDR)'],
  anRule:'Rules — Spike: at least 2x the average of other months and deviation of +IDR 300M or more (3+ active months) · Drop: other-month average of IDR 300M or more, falling to 50% or below, deviation of -IDR 300M or more · One-off / new: 2 or fewer active months and a single month of IDR 500M or more · Stopped: active in 3+ months during Jan-May but zero in Jun and Jul · Declining: Jun-Jul average at or below 70% of the Feb-May average with a drop of IDR 250M or more. Suppliers below IDR 200M for the period are excluded as noise.',
  avgLine:'Monthly avg',
  c1h:'Monthly purchase trend',
- c1note:m=>`Stacked by domestic / import · full IDR, USD equivalent, share & invoice count above each bar · Aug 2026 is partial (through 8/19)`+(m?` · <b style="color:var(--s1)">${m} selected</b> — this chart keeps the full period for comparison`:''),
+ c1note:m=>`Stacked by domestic / import · full IDR, USD equivalent, share & invoice count above each bar`+(m?` · <b style="color:var(--s1)">${m} selected</b> — this chart keeps the full period for comparison`:''),
  c1sel:m=>`Selected month <b style="color:var(--ink)">${m}</b> highlighted · KPIs above reflect that month`,
  c2h:'Top suppliers',
  c2note:(base,tot,n)=>`${base} purchases · full IDR / USD equivalent · top ${n} of ${tot} suppliers`,
@@ -452,7 +452,7 @@ const T={ko:{
 <b>· Month selection</b> — the month tabs above, or clicking a bar in the trend chart, recalculates every metric for that month alone. Only the trend chart keeps the full period, highlighting the selected month.<br>
 <b>· Supplier search</b> — the search boxes in "Top suppliers" and "Supplier detail" filter those two lists only; the KPIs and Pareto stay on the full data set.<br>
 <b>· Download Excel Ledger</b> — opens the source workbook (Summary / Monthly / By supplier / Supplier×Month / full ledger detail of ${n} lines, all sheets formula-linked).<br>
-<b>· August 2026 is partial data (through 8/19)</b> — take care when comparing months. The July spike is driven by large capital-equipment imports; for the underlying recurring trend, switch the scope above to <b>"Domestic"</b>.<br>
+The July spike is driven by large capital-equipment imports; for the underlying recurring trend, switch the scope above to <b>"Domestic"</b>.<br>
 · Source: Accurate "Purchase per Supplier Detail" (${CORE.period}) · ${n} ledger lines.`
 }};
 const t=()=>T[LANG];
